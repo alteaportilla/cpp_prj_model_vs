@@ -45,10 +45,10 @@ namespace GameStates
         std::cout << BoardConfig::kHeader;
         std::cout << BoardConfig::kConfigMsg;
 
-        context.width = Utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
-        context.height = Utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
+        context.width = utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
+        context.height = utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
 
-        Utils::initializeBoard(context.board, context.height, context.width);
+        utils::board::initialize(context.board, context.height, context.width);
 
         std::cout << std::format(BoardConfig::kSetMsg, context.width, context.height);
 
@@ -60,7 +60,7 @@ namespace GameStates
         std::cout << MineConfig::kHeader;
         std::cout << MineConfig::kExplain;
 
-        context.initialMines = Utils::enterNumberInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax);
+        context.initialMines = utils::enterNumberInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax);
         context.mines = context.initialMines;
         
         return { &stateCreatingPlayers };
@@ -76,7 +76,7 @@ namespace GameStates
                 player.name = name;
                 player.remainingMines = initialMines;
                 player.remainingGuesses = initialMines;
-                player.enterMine = &Utils::enterMine;
+                player.enterMine = &utils::game::enterMine;
                 return player;
             };
 
@@ -91,7 +91,7 @@ namespace GameStates
 
         while (name != stopCreation)
         {
-            if (Utils::nameExists(name, context.players))
+            if (utils::player::nameExists(name, context.players))
             {
                 std::cout << std::format(PlayerCreation::kRepeatedName, name);
             } 
@@ -151,7 +151,7 @@ namespace GameStates
     {
         if (context.players.empty())
         {
-            std::cout << UtilsMsg::kEmptyPlayers;
+            std::cout << utilsMsg::kEmptyPlayers;
             return { &stateCreatingPlayers };
         }
 
@@ -173,7 +173,7 @@ namespace GameStates
             // If there are more than two players, the number of mines a player can guess 
             // is limited to the player with the fewest mines
 
-            minesToPlace = Utils::whoHasLessAvailableMines(context.players);
+            minesToPlace = utils::player::whoHasLessAvailableMines(context.players);
 
             if (minesToPlace == 0)
             {
@@ -193,8 +193,8 @@ namespace GameStates
 
             player.enterMine(context, player);
 
-            std::cout << std::format(UtilsMsg::kBoardOfPlayerPrompt, player.name);
-            Utils::showPlayerBoardPerPlayer(context.width, context.height, context.board, player);
+            std::cout << std::format(utilsMsg::kBoardOfPlayerPrompt, player.name);
+            utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
         context.round++;
@@ -247,7 +247,7 @@ namespace GameStates
 
         for (auto& player : context.players)
         {
-            Utils::savePlayerMines(player);
+            utils::player::saveMines(player);
         }
 
         return { &stateGuessingMines };
@@ -268,7 +268,7 @@ namespace GameStates
 
             for (unsigned int i = 0; i < context.mines; i++)
             {
-                MinePosition minePosition = Utils::validBoardPosition(context.width, context.height, player);
+                MinePosition minePosition = utils::board::validPosition(context.width, context.height, player);
 
                 std::cout << std::format(GuessingMines::kSuccess, player.name, minePosition.x, minePosition.y);
                 
@@ -291,24 +291,24 @@ namespace GameStates
             {
                 // If the mine is from the player, it reduces the amount of mines it can place
 
-                if (Utils::isMineFromPlayer(guess, player.minesHistory)) 
+                if (utils::player::isMineFromPlayer(guess, player.minesHistory)) 
                 {
-                    Utils::handleOwnMine(player, guess, context.board);
+                    utils::game::handleOwnMine(player, guess, context.board);
                 } 
                 else if (context.board[guess.x][guess.y].state == PositionState::WithMine) 
                 {
-                    Utils::handleOpponentMine(player, guess, context.board, context.players);
+                    utils::game::handleOpponentMine(player, guess, context.board, context.players);
                 } 
                 else 
                 {
-                    Utils::handleMiss(player, guess, context.board);
+                    utils::game::handleMiss(player, guess, context.board);
                 }
             }
 
-            Utils::savePlayerGuesses(player);
+            utils::player::saveGuesses(player);
             
-            std::cout << std::format(UtilsMsg::kBoardOfPlayerPrompt, player.name);
-            Utils::showPlayerBoardPerPlayer(context.width, context.height, context.board, player);
+            std::cout << std::format(utilsMsg::kBoardOfPlayerPrompt, player.name);
+            utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
         std::cout << ProcessingGuesses::kCurrentScoresHeader;
@@ -331,7 +331,7 @@ namespace GameStates
 
         for (auto const& player : context.players)
         {
-            unsigned int totalOpponentMines = Utils::countOpponentMines(player, context.players);
+            unsigned int totalOpponentMines = utils::player::countOpponentMines(player, context.players);
 
             std::cout << std::format(Results::kPlayerInformation, player.name, player.opponentMinesDetected, totalOpponentMines, player.remainingMines);
 
@@ -348,7 +348,7 @@ namespace GameStates
             } 
         }
 
-        context.players = Utils::getPlayersAfterElimination(context.players, eliminated);
+        context.players = utils::player::getRemainigPlayers(context.players, eliminated);
 
         /*
             Game finishes if:
@@ -357,9 +357,9 @@ namespace GameStates
             - The board has no more available positions
         */
     
-        if (Utils::checkForWinners(winners) 
-            || Utils::checkForElimination(context.players) 
-            || Utils::checkBoardFull(context.width, context.height, context.board, context.players))
+        if (utils::player::areThereWinners(winners) 
+            || utils::game::hasOnePlayer(context.players) 
+            || utils::board::isFull(context.width, context.height, context.board, context.players))
         {
             return { nullptr };
         }
