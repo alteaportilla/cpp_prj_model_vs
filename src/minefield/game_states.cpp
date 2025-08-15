@@ -70,78 +70,25 @@ namespace GameStates
     {
         std::cout << PlayerCreation::kHeader;
 
-        auto newPlayer = [](std::string const& name, unsigned int initialMines)
-            {
-                Player player;
-                player.name = name;
-                player.remainingMines = initialMines;
-                player.remainingGuesses = initialMines;
-                player.enterMine = &utils::game::enterMine;
-                return player;
-            };
+        utils::player::addPlayers(context.players, context.initialMines);
 
-        std::string name;
-        std::cout << std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
-        std::cin >> name;
+        std::cout << context.players.size();
 
-        // PlayerCreation::Options::kStopCreation is a char '*'
-        // It's casted to std::string to be compared with name (std::string)
-
-        std::string stopCreation = std::string(1, PlayerCreation::Options::kStopCreation);
-
-        while (name != stopCreation)
-        {
-            if (utils::player::nameExists(name, context.players))
-            {
-                std::cout << std::format(PlayerCreation::kRepeatedName, name);
-            } 
-            else
-            {
-                Player player = newPlayer(name, context.initialMines);
-
-                // Type value is initialized with X by default
-                char type = 'X';
-
-                std::cout << std::format(PlayerCreation::kTypePrompt, player.name, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
-                std::cin >> type;
-
-                while (type != PlayerCreation::Options::kHuman && type != PlayerCreation::Options::kPC)
-                {
-                    std::cout << std::format(PlayerCreation::kInvalidType, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
-                    std::cin >> type;
-                }
-
-                player.type = (type == PlayerCreation::Options::kHuman) ? PlayerType::HumanPlayer : PlayerType::PC;
-
-                context.players.push_back(player);
-
-                std::cout << std::format(PlayerCreation::kAdded, name);
-            }
-            
-            std::cout << std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
-            std::cin >> name;
-        }
-
-        if (!context.players.empty())
-        {
-            if (context.players.size() == 1)
-            {
-                Player player = newPlayer(PlayerCreation::kPCName, context.initialMines);
-                player.type = PlayerType::PC;
-
-                context.players.push_back(player);
-
-                std::cout << std::format(PlayerCreation::kPCAdded, context.players[0].name, player.name);
-            }
-            else
-            {
-                std::cout << std::format(PlayerCreation::kCreated, context.players.size());
-            }
-        }
-        else 
+        if (context.players.empty())
         {
             std::cout << PlayerCreation::kZeroAdded;
             return { nullptr };
+        }
+        else if (context.players.size() == 1)
+        {
+            Player player = utils::player::getPCPlayer(context.initialMines);
+            context.players.push_back(player);
+
+            std::cout << std::format(PlayerCreation::kPCAdded, context.players[0].name, player.name);
+        }
+        else
+        {
+            std::cout << std::format(PlayerCreation::kCreated, context.players.size());
         }
 
         return { &statePuttingMines };

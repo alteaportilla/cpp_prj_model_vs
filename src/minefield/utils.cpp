@@ -1,9 +1,9 @@
 #include <minefield/utils.h>
 
 #include <cstdio>
-#include <format>
 #include <iomanip>
 #include <iostream>
+#include <format>
 #include <set>
 
 namespace utils
@@ -142,6 +142,94 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board)
 namespace player
 {
 
+Player getPCPlayer(unsigned int initialMines)
+{
+    char type = PlayerCreation::Options::kPC;
+    Player player = utils::player::createPlayer(PlayerCreation::kPCName, initialMines, type);
+    return player;
+}
+
+void addPlayers(Players& players, unsigned int initialMines)
+{
+    std::string name = getName();
+
+    // PlayerCreation::Options::kStopCreation is a char '*'
+    // It's casted to std::string to be compared with name (std::string)
+
+    std::string stopCreation = std::string(1, PlayerCreation::Options::kStopCreation);
+
+    while (name != stopCreation)
+    {
+        if (utils::player::nameExists(name, players))
+        {
+            std::cout << std::format(PlayerCreation::kRepeatedName, name);
+        }
+        else
+        {
+            char type = utils::player::getType(name);
+
+            Player newPlayer = createPlayer(name, initialMines, type);
+
+            players.push_back(newPlayer);
+
+            std::cout << std::format(PlayerCreation::kAdded, name);
+        }
+
+        name = getName();
+    }
+}
+
+std::string getName()
+{
+    std::string name;
+    std::cout << std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
+    std::cin >> name;
+    return name;
+}
+
+bool nameExists(std::string const& name, std::vector<Player> const& players)
+{
+    for (auto const& player : players)
+    {
+        if (player.name == name)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+char getType(std::string const& name)
+{
+    char type = 'X';
+
+    std::cout << std::format(PlayerCreation::kTypePrompt, name, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
+    std::cin >> type;
+
+    while (type != PlayerCreation::Options::kHuman && type != PlayerCreation::Options::kPC)
+    {
+        std::cout << "while";
+
+        std::cout << std::format(PlayerCreation::kInvalidType, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
+        std::cin >> type;
+    }
+
+    return type;
+}
+
+Player createPlayer(std::string const& name, unsigned int initialMines, char type)
+{
+    Player player;
+
+    player.name = name;
+    player.remainingMines = initialMines;
+    player.remainingGuesses = initialMines;
+    player.enterMine = &utils::game::enterMine;
+    player.type = (type == PlayerCreation::Options::kHuman) ? PlayerType::HumanPlayer : PlayerType::PC;
+
+    return player;
+}
+
 void saveMines(Player& player)
 {
     for (auto const& mine : player.placedMines)
@@ -250,18 +338,6 @@ bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const
     return false;
 }
 
-bool nameExists(std::string const& name, std::vector<Player> const& players)
-{
-    for (auto const& player : players)
-    {
-        if (player.name == name)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
 int whoHasLessAvailableMines(Players const& players)
 {
     unsigned int lessGuesses = std::numeric_limits<unsigned int>::max();
@@ -274,10 +350,12 @@ int whoHasLessAvailableMines(Players const& players)
     }
     return lessGuesses;
 }
+
 } // namespace players
 
 namespace board
 {
+
 int getStateValue(PositionState state)
 {
     return static_cast<int>(state);

@@ -133,7 +133,7 @@ namespace Results
     static constexpr char const* kProceedRound = "\nProceeding to round {}...\n";
 }
 
-namespace UtilsMsg
+namespace utilsMsg
 {
     static constexpr char const* kEnterXValue = "\nEnter X value (between {} and {}): ";
     static constexpr char const* kEnterYValue = "\nEnter Y value (between {} and {}): ";
