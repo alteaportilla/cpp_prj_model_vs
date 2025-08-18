@@ -45,12 +45,15 @@ namespace GameStates
         std::cout << BoardConfig::kHeader;
         std::cout << BoardConfig::kConfigMsg;
 
-        context.width = utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
-        context.height = utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
+        unsigned int width = utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
+        context.width.setValue(width);
 
+        unsigned int height = utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
+        context.height.setValue(height);
+        
         utils::board::initialize(context.board, context.height, context.width);
 
-        std::cout << std::format(BoardConfig::kSetMsg, context.width, context.height);
+        std::cout << std::format(BoardConfig::kSetMsg, context.width.raw(), context.height.raw());
 
         return { &stateEnteringMineCount };
     }
@@ -71,8 +74,6 @@ namespace GameStates
         std::cout << PlayerCreation::kHeader;
 
         utils::player::addPlayers(context.players, context.initialMines);
-
-        std::cout << context.players.size();
 
         if (context.players.empty())
         {
@@ -215,7 +216,7 @@ namespace GameStates
 
             for (unsigned int i = 0; i < context.mines; i++)
             {
-                MinePosition minePosition = utils::board::validPosition(context.width, context.height, player);
+                MinePosition minePosition = utils::board::validBoardPositionState(context.width, context.height, player);
 
                 std::cout << std::format(GuessingMines::kSuccess, player.name, minePosition.x, minePosition.y);
                 
@@ -289,7 +290,7 @@ namespace GameStates
             
             // Players who can't place more mines are removed
 
-            if (player.remainingMines == 0 && player.ownMinesDetected > context.initialMines / 2)
+            if (player.remainingMines == 0)
             {
                 eliminated.push_back(player);
             } 
