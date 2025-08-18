@@ -3,6 +3,37 @@
 #include <vector>
 #include <string>
 
+template <typename T, typename TagT>
+class StrongType
+{
+public:
+    constexpr explicit StrongType(T value)
+    : mValue{value}
+    {
+    }
+
+    constexpr StrongType(StrongType const&) = default;
+    constexpr StrongType(StrongType&&) = default;
+    constexpr StrongType& operator=(StrongType const&) = default;
+    constexpr StrongType& operator=(StrongType&&) = default;
+
+    void setValue(T value)
+    {
+        mValue = value;
+    }
+
+    constexpr T const& raw() const
+    {
+        return mValue;
+    }
+
+private:
+    T mValue;
+};
+
+typedef StrongType<unsigned int, struct WidthTag> Width;
+typedef StrongType<unsigned int, struct HeightTag> Height;
+
 enum class PositionState
 {
     Empty,         // -> 0
@@ -49,7 +80,7 @@ typedef void (*EnterMineFn)(GameContext&, Player&);
 // used in utils.cpp
 
 typedef MinePosition(*EnterPosFn)(unsigned int, unsigned int, Player const&);
-typedef MinePosition(*RandomPosFn)(unsigned int, unsigned int);
+typedef MinePosition(*RandomPosFn)(Width, Height);
 
 struct Player
 {
@@ -76,15 +107,15 @@ struct State
     StateUpdateFn updateFunction = nullptr;
 };
 
-
 struct GameContext
 {
     State currentState;
-    unsigned int width = 0;
-    unsigned int height = 0;
+    Width width{0};
+    Height height{0};
     Board board;
     unsigned int round = 1;
     unsigned int mines = 0;
     unsigned int initialMines = 0;
     Players players;
 };
+

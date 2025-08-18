@@ -11,9 +11,23 @@
 namespace utils
 {
 
+template <typename T, typename U>
+T enterValue(U message)
+{
+    T value;
+    std::cout << message;
+    std::cin >> value;
+    return value;
+}
+
+template <typename T>
+bool isInRange(T value, T min, T max)
+{
+    return (value >= min && value <= max);
+}
+
 unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max);
-unsigned int createRandomNumberInRange(int max); // getRandomNumberInRange
-//void checkPlayerGuessedOwnMine(Player& player, MinePosition const& mine, Board& board);
+unsigned int getRandomNumberInRange(int max); 
 
 namespace game
 {
@@ -31,7 +45,6 @@ namespace player
 
 Player getPCPlayer(unsigned int initialMines);
 void addPlayers(Players& players, unsigned int initialMines);
-std::string getName();
 bool nameExists(std::string const& name, std::vector<Player> const& players);
 char getType(std::string const& name);
 Player createPlayer(std::string const& name, unsigned int initialMines, char type);
@@ -50,15 +63,15 @@ namespace board
 {
 
 int getStateValue(PositionState state);
-bool hasEmptyPositions(unsigned int width, unsigned int height, Board const& board);
-bool isFull(unsigned int width, unsigned int height, Board const& board, Players const& players);
-void printPerPlayer(unsigned int width, unsigned int height, Board const& board, Player const& player);
-MinePosition createRandomBoardPosition(unsigned int width, unsigned int height); // getRandomBoardPosition
-MinePosition enterBoardPosition(unsigned int width, unsigned int height, Player const& player, RandomPosFn randomPos);
-std::string showInvalidPositionReason(PositionState const& state);
-bool isInvalidPosition(PositionState const& state);
-MinePosition validPosition(unsigned int width, unsigned int height, Player const& player); // validBoardPositionState
-void initialize(Board& board, unsigned int height, unsigned int width);
+bool hasEmptyPositions(Width width, Height height, Board const& board);
+bool isFull(Width width, Height height, Board const& board, Players const& players);
+void printPerPlayer(Width width, Height height, Board const& board, Player const& player);
+MinePosition getRandomBoardPosition(Width width, Height height);
+MinePosition enterBoardPosition(Width width, Height height, Player const& player, RandomPosFn randomPos);
+std::string showInvalidBoardPositionStateReason(PositionState const& state);
+bool isInvalidBoardPositionState(PositionState const& state);
+MinePosition validBoardPositionState(Width width, Height height, Player const& player);
+void initialize(Board& board, Height height, Width width);
 
 } // namespace board
 
