@@ -60,18 +60,18 @@ TEST(checkBoardFull, should_return_true_if_board_is_full)
     Board board;
     utils::board::initialize(board, height, width);
     
-    for (unsigned int x = 0; x < board.size(); x++)
+    for (unsigned int y = 0; y < board[0].size(); y++)
     {
-        for (unsigned int y = 0; y < board[0].size(); y++)
+        for (unsigned int x = 0; x < board.size(); x++)
         {
-            board[x][y].state = PositionState::WithMine;
+            board[y][x].state = PositionState::WithMine;
         }
     }
 
     EXPECT_TRUE(utils::board::isFull(width, height, board, players));
 }
 
-TEST(getPlayerWithHighestScore, should_return_false_if_players_is_empty)
+TEST(getPlayerWithHighestScore, should_return_nullptr_if_player_is_empty)
 {
     EXPECT_EQ(utils::player::getTopScorer(Players{}), nullptr);
 }
