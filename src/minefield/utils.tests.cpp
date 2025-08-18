@@ -2,12 +2,11 @@
 #include <minefield/utils.h>
 #include <minefield/types.h>
 
-namespace minefield::utils::tests
+namespace utils::tests
 {
-    
 TEST(createRandomNumberInRangeFn, should_return) 
 {
-    int num = Utils::createRandomNumberInRange(10);
+    int num = utils::createRandomNumberInRange(10);
     bool cond = num < 10;
     EXPECT_TRUE(cond);
 }
@@ -19,7 +18,7 @@ TEST(isMineFromPlayer, should_return_true_when_mine_is_from_player)
     MinePosition b{ 2, 2 };
     MinePosition c{ 3, 3 };
     std::vector<MinePosition> minePositions = {a, b, c};
-    EXPECT_TRUE(Utils::isMineFromPlayer(guess, minePositions));
+    EXPECT_TRUE(utils::player::isMineFromPlayer(guess, minePositions));
 }
 
 TEST(isMineFromPlayer, should_return_false_when_mine_is_not_from_player)
@@ -29,18 +28,18 @@ TEST(isMineFromPlayer, should_return_false_when_mine_is_not_from_player)
     MinePosition b{2, 2};
     MinePosition c{3, 3};
     std::vector<MinePosition> minePositions = {a, b, c};
-    EXPECT_FALSE(Utils::isMineFromPlayer(guess, minePositions));
+    EXPECT_FALSE(utils::player::isMineFromPlayer(guess, minePositions));
 }
 TEST(isInvalidPosition, should_return_false_if_mine_is_empty_or_with_mine)
 {
     MinePosition mineA{ 1, 1, PositionState::Empty };
     MinePosition mineB{ 1, 1, PositionState::WithMine };
-    EXPECT_FALSE(Utils::isInvalidPosition(mineA.state));
-    EXPECT_FALSE(Utils::isInvalidPosition(mineB.state));
+    EXPECT_FALSE(utils::board::isInvalidPosition(mineA.state));
+    EXPECT_FALSE(utils::board::isInvalidPosition(mineB.state));
 }
 TEST(nameExists, should_return_false_if_player_vector_is_empty) 
 {
-    EXPECT_FALSE(Utils::nameExists("PlayerName", Players{}));
+    EXPECT_FALSE(utils::player::nameExists("PlayerName", Players{}));
 }
 
 TEST(nameExists, should_return_true_if_name_exists_in_player_vector)
@@ -50,7 +49,7 @@ TEST(nameExists, should_return_true_if_name_exists_in_player_vector)
 
     p1.name = "PlayerName";
     players.emplace_back(p1);
-    EXPECT_TRUE(Utils::nameExists("PlayerName", players));
+    EXPECT_TRUE(utils::player::nameExists("PlayerName", players));
 }
 
 TEST(checkBoardFull, should_return_true_if_board_is_full)
@@ -59,22 +58,22 @@ TEST(checkBoardFull, should_return_true_if_board_is_full)
     unsigned int height = 5;
     Players players;
     Board board;
-    Utils::initializeBoard(board, height, width);
+    utils::board::initialize(board, height, width);
     
-    for (unsigned int x = 0; x < board.size(); x++)
+    for (unsigned int y = 0; y < board[0].size(); y++)
     {
-        for (unsigned int y = 0; y < board[0].size(); y++)
+        for (unsigned int x = 0; x < board.size(); x++)
         {
-            board[x][y].state = PositionState::WithMine;
+            board[y][x].state = PositionState::WithMine;
         }
     }
 
-    EXPECT_TRUE(Utils::checkBoardFull(width, height, board, players));
+    EXPECT_TRUE(utils::board::isFull(width, height, board, players));
 }
 
-TEST(getPlayerWithHighestScore, should_return_false_if_players_is_empty)
+TEST(getPlayerWithHighestScore, should_return_nullptr_if_player_is_empty)
 {
-    EXPECT_EQ(Utils::getPlayerWithHighestScore(Players{}), nullptr);
+    EXPECT_EQ(utils::player::getTopScorer(Players{}), nullptr);
 }
 
 }
