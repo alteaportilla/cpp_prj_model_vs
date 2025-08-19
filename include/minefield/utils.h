@@ -55,7 +55,7 @@ bool areThereWinners(Players const& winners);
 Players getRemainigPlayers(Players const& players, Players const& removed);
 int countOpponentMines(Player const& player, Players const& players);
 bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const& minePositions);
-int whoHasLessAvailableMines(Players const& players);
+unsigned int whoHasLessAvailableMines(Players const& players);
 
 } // namespace players
 

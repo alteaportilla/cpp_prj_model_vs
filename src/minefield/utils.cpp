@@ -11,13 +11,13 @@ namespace utils
 
 unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max)
 {   
-    std::string mdgWithMinMax = std::vformat(message, std::make_format_args(min, max));
-    auto number = utils::enterValue<unsigned int>(mdgWithMinMax);
+    std::string msgWithMinMax = std::vformat(message, std::make_format_args(min, max));
+    auto number = utils::enterValue<unsigned int>(msgWithMinMax);
 
     while (!utils::isInRange(number, min, max))
     {
-        std::string message = utilsMsg::kTryAgain + mdgWithMinMax;
-        number = utils::enterValue<unsigned int>(message);
+        std::string msg = utilsMsg::kTryAgain + msgWithMinMax;
+        number = utils::enterValue<unsigned int>(msg);
     }
 
     return number;
@@ -326,7 +326,7 @@ bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const
     return false;
 }
 
-int whoHasLessAvailableMines(Players const& players)
+unsigned int whoHasLessAvailableMines(Players const& players)
 {
     unsigned int lessGuesses = std::numeric_limits<unsigned int>::max();
     for (auto const& player : players)
@@ -409,7 +409,7 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
         std::cout << std::setw(Display::kBoardColWidth) << i;
     }
 
-    std::cout << std::endl;
+    std::cout << '\n';
 
     for (unsigned int j = 0; j < height.raw(); ++j)
     {
@@ -437,7 +437,7 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
             }
         }
 
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 
