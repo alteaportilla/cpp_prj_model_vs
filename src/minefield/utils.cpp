@@ -337,9 +337,9 @@ int getStateValue(PositionState state)
 
 bool hasEmptyPositions(Width width, Height height, Board const& board)
 {
-    for (unsigned int i = 0; i < width.raw(); ++i)
+    for (unsigned int i = 0; i < width.getValue(); ++i)
     {
-        for (unsigned int j = 0; j < height.raw(); ++j)
+        for (unsigned int j = 0; j < height.getValue(); ++j)
         {
             if (board[i][j].state == PositionState::Empty)
             {
@@ -390,18 +390,18 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
 {
     std::cout << std::setw(Display::kBoardColWidth) << "";
 
-    for (unsigned int i = 0; i < width.raw(); ++i)
+    for (unsigned int i = 0; i < width.getValue(); ++i)
     {
         std::cout << std::setw(Display::kBoardColWidth) << i;
     }
 
     std::cout << '\n';
 
-    for (unsigned int j = 0; j < height.raw(); ++j)
+    for (unsigned int j = 0; j < height.getValue(); ++j)
     {
         std::cout << std::setw(Display::kBoardColWidth) << j;
 
-        for (unsigned int k = 0; k < width.raw(); ++k)
+        for (unsigned int k = 0; k < width.getValue(); ++k)
         {
             MinePosition minePositionFromBoard = board[j][k];
 
@@ -429,8 +429,8 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
 
 MinePosition getRandomBoardPosition(Width width, Height height)
 {
-    unsigned int xPos = getRandomNumberInRange(width.raw());
-    unsigned int yPos = getRandomNumberInRange(height.raw());
+    unsigned int xPos = getRandomNumberInRange(width.getValue());
+    unsigned int yPos = getRandomNumberInRange(height.getValue());
     return {xPos, yPos};
 }
 
@@ -439,8 +439,8 @@ MinePosition enterBoardPosition(Width width, Height height, Player const& player
     MinePosition minePosition;
     if (player.type == PlayerType::HumanPlayer)
     {
-        auto xPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterXValue, static_cast<unsigned int>(0), (width.raw() - 1));
-        auto yPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterYValue, static_cast<unsigned int>(0), (height.raw() - 1));
+        auto xPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterXValue, static_cast<unsigned int>(0), (width.getValue() - 1));
+        auto yPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterYValue, static_cast<unsigned int>(0), (height.getValue() - 1));
         minePosition = {xPos, yPos};
     }
     else if (player.type == PlayerType::PC)
@@ -492,11 +492,11 @@ MinePosition validBoardPositionState(Width width, Height height, Player const& p
 
 void initialize(Board& board, Height height, Width width)
 {
-    board.resize(height.raw());
-    for (unsigned int j = 0; j < height.raw(); ++j)
+    board.resize(height.getValue());
+    for (unsigned int j = 0; j < height.getValue(); ++j)
     {
-        board[j].resize(width.raw());
-        for (unsigned int k = 0; k < width.raw(); ++k)
+        board[j].resize(width.getValue());
+        for (unsigned int k = 0; k < width.getValue(); ++k)
         {
             board[j][k] = MinePosition{j, k, PositionState::Empty};
         }

@@ -50,7 +50,7 @@ namespace GameStates
         
         utils::board::initialize(context.board, context.height, context.width);
 
-        std::cout << std::format(BoardConfig::kSetMsg, context.width.raw(), context.height.raw());
+        std::cout << std::format(BoardConfig::kSetMsg, context.width.getValue(), context.height.getValue());
 
         return { &stateEnteringMineCount };
     }
@@ -104,7 +104,7 @@ namespace GameStates
 
         unsigned int minesToPlace = 0;
 
-        if (context.round == 1)
+        if (context.round.getValue() == 1)
         {
             minesToPlace = context.initialMines;
 
@@ -142,7 +142,8 @@ namespace GameStates
             utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
-        context.round++;
+        auto currentRound = context.round.getValue();
+        context.round.setValue(currentRound + 1);
 
         return { &stateProcessingMines };
     }
@@ -269,7 +270,7 @@ namespace GameStates
 
     NextState stateCheckingNextTurn(GameContext& context)
     {
-        std::cout << std::format(Results::kHeader, (context.round - 1));
+        std::cout << std::format(Results::kHeader, (context.round.getValue() - 1));
 
         Players winners;
         Players eliminated;

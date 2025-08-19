@@ -17,9 +17,14 @@ public:
     constexpr StrongType& operator=(StrongType const&) = default;
     constexpr StrongType& operator=(StrongType&&) = default;
 
-    constexpr T const& raw() const
+    constexpr T const& getValue() const
     {
         return mValue;
+    }
+
+    void setValue(T newValue)
+    {
+        this->mValue = newValue;
     }
 
 private:
@@ -28,6 +33,8 @@ private:
 
 typedef StrongType<unsigned int, struct WidthTag> Width;
 typedef StrongType<unsigned int, struct HeightTag> Height;
+typedef StrongType<unsigned int, struct RoundTag> Round;
+
 
 enum class PositionState
 {
@@ -108,7 +115,7 @@ struct GameContext
     Width width{0};
     Height height{0};
     Board board;
-    unsigned int round = 1;
+    Round round{1};
     unsigned int mines = 0;
     unsigned int initialMines = 0;
     Players players;
