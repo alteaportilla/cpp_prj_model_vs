@@ -26,7 +26,21 @@ bool isInRange(T value, T min, T max)
     return (value >= min && value <= max);
 }
 
-unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max);
+template <typename T>
+T enterValueInRange(std::string const& message, T min, T max)
+{
+    std::string msgWithMinMax = std::vformat(std::string(message), std::make_format_args(min, max));
+    T value = utils::enterValue<T>(msgWithMinMax);
+
+    while (!utils::isInRange(value, min, max))
+    {
+        std::string msg = utilsMsg::kTryAgain + msgWithMinMax;
+        value = utils::enterValue<T>(msg);
+    }
+
+    return value;
+}
+
 unsigned int getRandomNumberInRange(int max); 
 
 namespace game

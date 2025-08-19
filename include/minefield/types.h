@@ -17,11 +17,6 @@ public:
     constexpr StrongType& operator=(StrongType const&) = default;
     constexpr StrongType& operator=(StrongType&&) = default;
 
-    void setValue(T&& value)
-    {
-        mValue = value;
-    }
-
     constexpr T const& raw() const
     {
         return mValue;

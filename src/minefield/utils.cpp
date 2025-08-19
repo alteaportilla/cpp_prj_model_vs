@@ -9,20 +9,6 @@
 namespace utils
 {
 
-unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max)
-{   
-    std::string msgWithMinMax = std::vformat(message, std::make_format_args(min, max));
-    auto number = utils::enterValue<unsigned int>(msgWithMinMax);
-
-    while (!utils::isInRange(number, min, max))
-    {
-        std::string msg = utilsMsg::kTryAgain + msgWithMinMax;
-        number = utils::enterValue<unsigned int>(msg);
-    }
-
-    return number;
-}
-
 unsigned int getRandomNumberInRange(int max)
 {
     unsigned int number = rand() % max;
@@ -453,8 +439,8 @@ MinePosition enterBoardPosition(Width width, Height height, Player const& player
     MinePosition minePosition;
     if (player.type == PlayerType::HumanPlayer)
     {
-        unsigned int xPos = utils::enterNumberInRange(utilsMsg::kEnterXValue, 0, (width.raw() - 1));
-        unsigned int yPos = utils::enterNumberInRange(utilsMsg::kEnterYValue, 0, (height.raw() - 1));
+        auto xPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterXValue, static_cast<unsigned int>(0), (width.raw() - 1));
+        auto yPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterYValue, static_cast<unsigned int>(0), (height.raw() - 1));
         minePosition = {xPos, yPos};
     }
     else if (player.type == PlayerType::PC)

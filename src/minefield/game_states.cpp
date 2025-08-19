@@ -45,11 +45,8 @@ namespace GameStates
         std::cout << BoardConfig::kHeader;
         std::cout << BoardConfig::kConfigMsg;
 
-        unsigned int width = utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
-        context.width.setValue(width);
-
-        unsigned int height = utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
-        context.height.setValue(height);
+        context.width = Width(utils::enterValueInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth));
+        context.height = Height(utils::enterValueInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight));
         
         utils::board::initialize(context.board, context.height, context.width);
 
@@ -63,7 +60,7 @@ namespace GameStates
         std::cout << MineConfig::kHeader;
         std::cout << MineConfig::kExplain;
 
-        context.initialMines = utils::enterNumberInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax);
+        context.initialMines = utils::enterValueInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax);
         context.mines = context.initialMines;
         
         return { &stateCreatingPlayers };
