@@ -7,7 +7,7 @@ template <typename T, typename TagT>
 class StrongType
 {
 public:
-    constexpr explicit StrongType(T value)
+    constexpr explicit StrongType(T&& value)
     : mValue{value}
     {
     }
@@ -17,7 +17,7 @@ public:
     constexpr StrongType& operator=(StrongType const&) = default;
     constexpr StrongType& operator=(StrongType&&) = default;
 
-    void setValue(T value)
+    void setValue(T&& value)
     {
         mValue = value;
     }
