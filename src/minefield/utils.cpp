@@ -25,9 +25,9 @@ void enterMine(GameContext& context, Player& player)
         std::cout << std::format(utilsMsg::kEmptyBoard);
     }
 
-    for (unsigned int i = 0; i < context.mines; i++)
+    for (unsigned int i = 0; i < context.mines.getValue(); i++)
     {
-        std::cout << std::format(PuttingMines::kMessage, (i + 1), context.mines);
+        std::cout << std::format(PuttingMines::kMessage, (i + 1), context.mines.getValue());
 
         MinePosition minePosition = utils::board::validBoardPositionState(context.width, context.height, player);
         context.board[minePosition.x][minePosition.y] = minePosition;
@@ -69,12 +69,12 @@ void handleOwnMine(Player& player, MinePosition const& mine, Board& board)
     }
 
     std::cout << std::format(ProcessingGuesses::kHitOwnMine, player.name, mine.x, mine.y);
-    player.ownMinesDetected++;
+    player.ownMinesDetected.setValue(player.ownMinesDetected.getValue() + 1);
 
-    if (player.remainingMines > 0)
+    if (player.remainingMines.getValue() > 0)
     {
-        std::cout << std::format(ProcessingGuesses::kMinesRemaining, player.remainingMines);
-        player.remainingMines--;
+        std::cout << std::format(ProcessingGuesses::kMinesRemaining, player.remainingMines.getValue());
+        player.remainingMines.setValue(player.remainingMines.getValue() - 1);
         board[mine.x][mine.y].state = PositionState::Removed;
     }
 }
@@ -94,7 +94,7 @@ void handleOpponentMine(Player& player, MinePosition const& mine, Board& board, 
     // If the position has a mine, the player detected a mine from other player
 
     std::cout << std::format(ProcessingGuesses::kHitOpponentMine, player.name, mine.x, mine.y);
-    player.opponentMinesDetected++;
+    player.opponentMinesDetected.setValue(player.opponentMinesDetected.getValue() + 1);
     board[mine.x][mine.y].state = PositionState::GuessedMine;
 
     for (auto const& opponent : players)
@@ -123,14 +123,14 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board)
 namespace player
 {
 
-Player getPCPlayer(unsigned int initialMines)
+Player getPCPlayer(MinesCount initialMines)
 {
     char type = PlayerCreation::Options::kPC;
     Player player = utils::player::createPlayer(PlayerCreation::kPCName, initialMines, type);
     return player;
 }
 
-void addPlayers(Players& players, unsigned int initialMines)
+void addPlayers(Players& players, MinesCount initialMines)
 {
     std::string message = std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
     auto name = utils::enterValue<std::string>(message);
@@ -192,13 +192,13 @@ char getType(std::string const& name)
     return type;
 }
 
-Player createPlayer(std::string const& name, unsigned int initialMines, char type)
+Player createPlayer(std::string const& name, MinesCount initialMines, char type)
 {
     Player player;
 
     player.name = name;
     player.remainingMines = initialMines;
-    player.remainingGuesses = initialMines;
+    player.remainingGuesses.setValue(initialMines.getValue());
     player.enterMine = &utils::game::enterMine;
     player.type = (type == PlayerCreation::Options::kHuman) ? PlayerType::HumanPlayer : PlayerType::PC;
 
@@ -229,7 +229,7 @@ Player const* getTopScorer(Players const& players)
 
     for (auto const& player : players)
     {
-        unsigned int score = player.opponentMinesDetected - player.ownMinesDetected;
+        unsigned int score = player.opponentMinesDetected.getValue() - player.ownMinesDetected.getValue();
 
         std::cout << std::format(Results::kScoreOfPlayer, player.name, score);
 
@@ -312,14 +312,14 @@ bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const
     return false;
 }
 
-unsigned int whoHasLessAvailableMines(Players const& players)
+GuessesCount whoHasLessAvailableMines(Players const& players)
 {
-    unsigned int lessGuesses = std::numeric_limits<unsigned int>::max();
+    GuessesCount lessGuesses{std::numeric_limits<unsigned int>::max()};
     for (auto const& player : players)
     {
-        if (player.remainingMines < lessGuesses)
+        if (player.remainingMines.getValue() < lessGuesses.getValue())
         {
-            lessGuesses = player.remainingMines;
+            lessGuesses.setValue(player.remainingMines.getValue());
         }
     }
     return lessGuesses;

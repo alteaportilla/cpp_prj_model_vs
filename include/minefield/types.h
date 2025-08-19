@@ -34,7 +34,9 @@ private:
 typedef StrongType<unsigned int, struct WidthTag> Width;
 typedef StrongType<unsigned int, struct HeightTag> Height;
 typedef StrongType<unsigned int, struct RoundTag> Round;
-
+typedef StrongType<unsigned int, struct MinesCountTag> MinesCount;
+typedef StrongType<unsigned int, struct GuessesCountTag> GuessesCount;
+typedef StrongType<unsigned int, struct DetectedMinesTag> DetectedMines;
 
 enum class PositionState
 {
@@ -92,10 +94,10 @@ struct Player
     std::vector<MinePosition> placedGuesses;
     std::vector<MinePosition> minesHistory;
     std::vector<MinePosition> guessesHistory;
-    unsigned int remainingMines = 0;
-    unsigned int remainingGuesses = 0;
-    unsigned int opponentMinesDetected = 0;
-    unsigned int ownMinesDetected = 0;
+    MinesCount remainingMines{0};
+    GuessesCount remainingGuesses{0};
+    DetectedMines opponentMinesDetected{0};
+    DetectedMines ownMinesDetected{0};
     EnterMineFn enterMine = nullptr;
 
     bool operator==(Player const &other) const
@@ -116,8 +118,8 @@ struct GameContext
     Height height{0};
     Board board;
     Round round{1};
-    unsigned int mines = 0;
-    unsigned int initialMines = 0;
+    MinesCount mines{0};
+    MinesCount initialMines{0};
     Players players;
 };
 

@@ -57,11 +57,11 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board);
 namespace player
 {
 
-Player getPCPlayer(unsigned int initialMines);
-void addPlayers(Players& players, unsigned int initialMines);
+Player getPCPlayer(MinesCount initialMines);
+void addPlayers(Players& players, MinesCount initialMines);
 bool nameExists(std::string const& name, std::vector<Player> const& players);
 char getType(std::string const& name);
-Player createPlayer(std::string const& name, unsigned int initialMines, char type);
+Player createPlayer(std::string const& name, MinesCount initialMines, char type);
 void saveMines(Player& player);
 void saveGuesses(Player& player);
 Player const* getTopScorer(Players const& players);
@@ -69,7 +69,7 @@ bool areThereWinners(Players const& winners);
 Players getRemainigPlayers(Players const& players, Players const& removed);
 int countOpponentMines(Player const& player, Players const& players);
 bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const& minePositions);
-unsigned int whoHasLessAvailableMines(Players const& players);
+GuessesCount whoHasLessAvailableMines(Players const& players);
 
 } // namespace players
 
