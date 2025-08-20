@@ -26,7 +26,21 @@ bool isInRange(T value, T min, T max)
     return (value >= min && value <= max);
 }
 
-unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max);
+template <typename T>
+T enterValueInRange(std::string const& message, T min, T max)
+{
+    std::string msgWithMinMax = std::vformat(std::string(message), std::make_format_args(min, max));
+    T value = utils::enterValue<T>(msgWithMinMax);
+
+    while (!utils::isInRange(value, min, max))
+    {
+        std::string msg = utilsMsg::kTryAgain + msgWithMinMax;
+        value = utils::enterValue<T>(msg);
+    }
+
+    return value;
+}
+
 unsigned int getRandomNumberInRange(int max); 
 
 namespace game
@@ -43,11 +57,11 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board);
 namespace player
 {
 
-Player getPCPlayer(unsigned int initialMines);
-void addPlayers(Players& players, unsigned int initialMines);
+Player getPCPlayer(MinesCount initialMines);
+void addPlayers(Players& players, MinesCount initialMines);
 bool nameExists(std::string const& name, std::vector<Player> const& players);
 char getType(std::string const& name);
-Player createPlayer(std::string const& name, unsigned int initialMines, char type);
+Player createPlayer(std::string const& name, MinesCount initialMines, char type);
 void saveMines(Player& player);
 void saveGuesses(Player& player);
 Player const* getTopScorer(Players const& players);
@@ -55,7 +69,7 @@ bool areThereWinners(Players const& winners);
 Players getRemainigPlayers(Players const& players, Players const& removed);
 int countOpponentMines(Player const& player, Players const& players);
 bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const& minePositions);
-int whoHasLessAvailableMines(Players const& players);
+GuessesCount whoHasLessAvailableMines(Players const& players);
 
 } // namespace players
 

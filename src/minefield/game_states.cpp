@@ -45,15 +45,12 @@ namespace GameStates
         std::cout << BoardConfig::kHeader;
         std::cout << BoardConfig::kConfigMsg;
 
-        unsigned int width = utils::enterNumberInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth);
-        context.width.setValue(width);
-
-        unsigned int height = utils::enterNumberInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight);
-        context.height.setValue(height);
+        context.width = Width(utils::enterValueInRange(BoardConfig::kEnterWidth, BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth));
+        context.height = Height(utils::enterValueInRange(BoardConfig::kEnterHeight, BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight));
         
         utils::board::initialize(context.board, context.height, context.width);
 
-        std::cout << std::format(BoardConfig::kSetMsg, context.width.raw(), context.height.raw());
+        std::cout << std::format(BoardConfig::kSetMsg, context.width.getValue(), context.height.getValue());
 
         return { &stateEnteringMineCount };
     }
@@ -63,7 +60,7 @@ namespace GameStates
         std::cout << MineConfig::kHeader;
         std::cout << MineConfig::kExplain;
 
-        context.initialMines = utils::enterNumberInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax);
+        context.initialMines.setValue(utils::enterValueInRange(MineConfig::kEnterMines, MineConfig::Limits::kMin, MineConfig::Limits::kMax));
         context.mines = context.initialMines;
         
         return { &stateCreatingPlayers };
@@ -107,21 +104,21 @@ namespace GameStates
 
         unsigned int minesToPlace = 0;
 
-        if (context.round == 1)
+        if (context.round.getValue() == 1)
         {
-            minesToPlace = context.initialMines;
+            minesToPlace = context.initialMines.getValue();
 
             std::cout << std::format(PuttingMines::kFirstRound);
             std::cout << std::format(PuttingMines::kPlayersWillPlaceMines, minesToPlace);
         }
         else
         {
-            std::cout << std::format(PuttingMines::kRoundNumber, context.round);
+            std::cout << std::format(PuttingMines::kRoundNumber, context.round.getValue());
 
             // If there are more than two players, the number of mines a player can guess 
             // is limited to the player with the fewest mines
 
-            minesToPlace = utils::player::whoHasLessAvailableMines(context.players);
+            minesToPlace = utils::player::whoHasLessAvailableMines(context.players).getValue();
 
             if (minesToPlace == 0)
             {
@@ -131,7 +128,7 @@ namespace GameStates
             else
             {
                 std::cout << std::format(PuttingMines::kPlayersWillPlaceMines, minesToPlace);
-                context.mines = minesToPlace; 
+                context.mines.setValue(minesToPlace); 
             }
         }
         
@@ -145,7 +142,8 @@ namespace GameStates
             utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
-        context.round++;
+        auto currentRound = context.round.getValue();
+        context.round.setValue(currentRound + 1);
 
         return { &stateProcessingMines };
     }
@@ -208,13 +206,13 @@ namespace GameStates
         // The number of guesses the players can make is the same
         // to the number of mines they can place
         
-        std::cout << std::format(GuessingMines::kTotalMsg, context.mines);
+        std::cout << std::format(GuessingMines::kTotalMsg, context.mines.getValue());
 
         for (auto& player : context.players)
         {
             std::cout << std::format(GuessingMines::kPlayerTurn, player.name);
 
-            for (unsigned int i = 0; i < context.mines; i++)
+            for (unsigned int i = 0; i < context.mines.getValue(); i++)
             {
                 MinePosition minePosition = utils::board::validBoardPositionState(context.width, context.height, player);
 
@@ -263,7 +261,7 @@ namespace GameStates
             
         for (auto const& player : context.players)
         {
-            std::cout << std::format(ProcessingGuesses::kScoreLine, player.name, player.opponentMinesDetected, player.ownMinesDetected);
+            std::cout << std::format(ProcessingGuesses::kScoreLine, player.name, player.opponentMinesDetected.getValue(), player.ownMinesDetected.getValue());
         }
 
         return { &stateCheckingNextTurn };
@@ -272,7 +270,7 @@ namespace GameStates
 
     NextState stateCheckingNextTurn(GameContext& context)
     {
-        std::cout << std::format(Results::kHeader, (context.round - 1));
+        std::cout << std::format(Results::kHeader, (context.round.getValue() - 1));
 
         Players winners;
         Players eliminated;
@@ -281,16 +279,17 @@ namespace GameStates
         {
             unsigned int totalOpponentMines = utils::player::countOpponentMines(player, context.players);
 
-            std::cout << std::format(Results::kPlayerInformation, player.name, player.opponentMinesDetected, totalOpponentMines, player.remainingMines);
+            std::cout << std::format(
+                Results::kPlayerInformation, player.name, player.opponentMinesDetected.getValue(), totalOpponentMines, player.remainingMines.getValue());
 
-            if (player.opponentMinesDetected >= totalOpponentMines && totalOpponentMines > 0)
+            if (player.opponentMinesDetected.getValue() >= totalOpponentMines && totalOpponentMines > 0)
             {
                 winners.push_back(player);
             }
             
             // Players who can't place more mines are removed
 
-            if (player.remainingMines == 0)
+            if (player.remainingMines.getValue() == 0)
             {
                 eliminated.push_back(player);
             } 
@@ -312,7 +311,7 @@ namespace GameStates
             return { nullptr };
         }
 
-        std::cout << std::format(Results::kProceedRound, context.round);
+        std::cout << std::format(Results::kProceedRound, context.round.getValue());
         
         return { &statePuttingMines };
     }

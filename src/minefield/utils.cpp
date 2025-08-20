@@ -9,20 +9,6 @@
 namespace utils
 {
 
-unsigned int enterNumberInRange(char const* message, unsigned int min, unsigned int max)
-{   
-    std::string mdgWithMinMax = std::vformat(message, std::make_format_args(min, max));
-    auto number = utils::enterValue<unsigned int>(mdgWithMinMax);
-
-    while (!utils::isInRange(number, min, max))
-    {
-        std::string message = utilsMsg::kTryAgain + mdgWithMinMax;
-        number = utils::enterValue<unsigned int>(message);
-    }
-
-    return number;
-}
-
 unsigned int getRandomNumberInRange(int max)
 {
     unsigned int number = rand() % max;
@@ -39,9 +25,9 @@ void enterMine(GameContext& context, Player& player)
         std::cout << std::format(utilsMsg::kEmptyBoard);
     }
 
-    for (unsigned int i = 0; i < context.mines; i++)
+    for (unsigned int i = 0; i < context.mines.getValue(); i++)
     {
-        std::cout << std::format(PuttingMines::kMessage, (i + 1), context.mines);
+        std::cout << std::format(PuttingMines::kMessage, (i + 1), context.mines.getValue());
 
         MinePosition minePosition = utils::board::validBoardPositionState(context.width, context.height, player);
         context.board[minePosition.x][minePosition.y] = minePosition;
@@ -83,12 +69,12 @@ void handleOwnMine(Player& player, MinePosition const& mine, Board& board)
     }
 
     std::cout << std::format(ProcessingGuesses::kHitOwnMine, player.name, mine.x, mine.y);
-    player.ownMinesDetected++;
+    player.ownMinesDetected.setValue(player.ownMinesDetected.getValue() + 1);
 
-    if (player.remainingMines > 0)
+    if (player.remainingMines.getValue() > 0)
     {
-        std::cout << std::format(ProcessingGuesses::kMinesRemaining, player.remainingMines);
-        player.remainingMines--;
+        std::cout << std::format(ProcessingGuesses::kMinesRemaining, player.remainingMines.getValue());
+        player.remainingMines.setValue(player.remainingMines.getValue() - 1);
         board[mine.x][mine.y].state = PositionState::Removed;
     }
 }
@@ -108,7 +94,7 @@ void handleOpponentMine(Player& player, MinePosition const& mine, Board& board, 
     // If the position has a mine, the player detected a mine from other player
 
     std::cout << std::format(ProcessingGuesses::kHitOpponentMine, player.name, mine.x, mine.y);
-    player.opponentMinesDetected++;
+    player.opponentMinesDetected.setValue(player.opponentMinesDetected.getValue() + 1);
     board[mine.x][mine.y].state = PositionState::GuessedMine;
 
     for (auto const& opponent : players)
@@ -137,14 +123,14 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board)
 namespace player
 {
 
-Player getPCPlayer(unsigned int initialMines)
+Player getPCPlayer(MinesCount initialMines)
 {
     char type = PlayerCreation::Options::kPC;
     Player player = utils::player::createPlayer(PlayerCreation::kPCName, initialMines, type);
     return player;
 }
 
-void addPlayers(Players& players, unsigned int initialMines)
+void addPlayers(Players& players, MinesCount initialMines)
 {
     std::string message = std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
     auto name = utils::enterValue<std::string>(message);
@@ -206,13 +192,13 @@ char getType(std::string const& name)
     return type;
 }
 
-Player createPlayer(std::string const& name, unsigned int initialMines, char type)
+Player createPlayer(std::string const& name, MinesCount initialMines, char type)
 {
     Player player;
 
     player.name = name;
     player.remainingMines = initialMines;
-    player.remainingGuesses = initialMines;
+    player.remainingGuesses.setValue(initialMines.getValue());
     player.enterMine = &utils::game::enterMine;
     player.type = (type == PlayerCreation::Options::kHuman) ? PlayerType::HumanPlayer : PlayerType::PC;
 
@@ -243,7 +229,7 @@ Player const* getTopScorer(Players const& players)
 
     for (auto const& player : players)
     {
-        unsigned int score = player.opponentMinesDetected - player.ownMinesDetected;
+        unsigned int score = player.opponentMinesDetected.getValue() - player.ownMinesDetected.getValue();
 
         std::cout << std::format(Results::kScoreOfPlayer, player.name, score);
 
@@ -326,14 +312,14 @@ bool isMineFromPlayer(MinePosition const& guess, std::vector<MinePosition> const
     return false;
 }
 
-int whoHasLessAvailableMines(Players const& players)
+GuessesCount whoHasLessAvailableMines(Players const& players)
 {
-    unsigned int lessGuesses = std::numeric_limits<unsigned int>::max();
+    GuessesCount lessGuesses{std::numeric_limits<unsigned int>::max()};
     for (auto const& player : players)
     {
-        if (player.remainingMines < lessGuesses)
+        if (player.remainingMines.getValue() < lessGuesses.getValue())
         {
-            lessGuesses = player.remainingMines;
+            lessGuesses.setValue(player.remainingMines.getValue());
         }
     }
     return lessGuesses;
@@ -351,9 +337,9 @@ int getStateValue(PositionState state)
 
 bool hasEmptyPositions(Width width, Height height, Board const& board)
 {
-    for (unsigned int i = 0; i < width.raw(); ++i)
+    for (unsigned int i = 0; i < width.getValue(); ++i)
     {
-        for (unsigned int j = 0; j < height.raw(); ++j)
+        for (unsigned int j = 0; j < height.getValue(); ++j)
         {
             if (board[i][j].state == PositionState::Empty)
             {
@@ -404,18 +390,18 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
 {
     std::cout << std::setw(Display::kBoardColWidth) << "";
 
-    for (unsigned int i = 0; i < width.raw(); ++i)
+    for (unsigned int i = 0; i < width.getValue(); ++i)
     {
         std::cout << std::setw(Display::kBoardColWidth) << i;
     }
 
-    std::cout << std::endl;
+    std::cout << '\n';
 
-    for (unsigned int j = 0; j < height.raw(); ++j)
+    for (unsigned int j = 0; j < height.getValue(); ++j)
     {
         std::cout << std::setw(Display::kBoardColWidth) << j;
 
-        for (unsigned int k = 0; k < width.raw(); ++k)
+        for (unsigned int k = 0; k < width.getValue(); ++k)
         {
             MinePosition minePositionFromBoard = board[j][k];
 
@@ -437,14 +423,14 @@ void printPerPlayer(Width width, Height height, Board const& board, Player const
             }
         }
 
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 
 MinePosition getRandomBoardPosition(Width width, Height height)
 {
-    unsigned int xPos = getRandomNumberInRange(width.raw());
-    unsigned int yPos = getRandomNumberInRange(height.raw());
+    unsigned int xPos = getRandomNumberInRange(width.getValue());
+    unsigned int yPos = getRandomNumberInRange(height.getValue());
     return {xPos, yPos};
 }
 
@@ -453,8 +439,8 @@ MinePosition enterBoardPosition(Width width, Height height, Player const& player
     MinePosition minePosition;
     if (player.type == PlayerType::HumanPlayer)
     {
-        unsigned int xPos = utils::enterNumberInRange(utilsMsg::kEnterXValue, 0, (width.raw() - 1));
-        unsigned int yPos = utils::enterNumberInRange(utilsMsg::kEnterYValue, 0, (height.raw() - 1));
+        auto xPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterXValue, static_cast<unsigned int>(0), (width.getValue() - 1));
+        auto yPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterYValue, static_cast<unsigned int>(0), (height.getValue() - 1));
         minePosition = {xPos, yPos};
     }
     else if (player.type == PlayerType::PC)
@@ -506,11 +492,11 @@ MinePosition validBoardPositionState(Width width, Height height, Player const& p
 
 void initialize(Board& board, Height height, Width width)
 {
-    board.resize(height.raw());
-    for (unsigned int j = 0; j < height.raw(); ++j)
+    board.resize(height.getValue());
+    for (unsigned int j = 0; j < height.getValue(); ++j)
     {
-        board[j].resize(width.raw());
-        for (unsigned int k = 0; k < width.raw(); ++k)
+        board[j].resize(width.getValue());
+        for (unsigned int k = 0; k < width.getValue(); ++k)
         {
             board[j][k] = MinePosition{j, k, PositionState::Empty};
         }
