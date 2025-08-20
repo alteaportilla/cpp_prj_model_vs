@@ -1,13 +1,13 @@
 #include <minefield/game_states.h>
 #include <minefield/types.h>
 #include <minefield/utils.h>
-
-#include <iostream>
+#include <minefield/json_utils.h>
 
 void runMainLoop()
 {
     bool quit = false;
     GameContext context;
+    context.language = json_utils::loadLanguage("../resources/minefield/en.json");
     context.currentState = { &GameStates::stateMainMenuUpdate };
     while (!quit)
     {

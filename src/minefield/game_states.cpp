@@ -3,6 +3,8 @@
 #include <minefield/constants.h>
 #include <minefield/utils.h>
 
+#include <minefield/json_utils.h>
+
 #include <iostream>
 #include <cstdio>
 #include <format>
@@ -12,11 +14,12 @@ namespace GameStates
 {
     NextState stateMainMenuUpdate(GameContext& context)
     {
-        std::cout << MainMenu::kHeader;
-        std::cout << std::format(MainMenu::kStart, MainMenu::Options::kStart);
-        std::cout << std::format(MainMenu::kQuit, MainMenu::Options::kQuit);
+        std::cout << context.language["MainMenu::kHeader"] << '\n';
+        std::cout << std::vformat(context.language["MainMenu::kStart"], std::make_format_args(MainMenu::Options::kStart));
+        std::cout << std::vformat(context.language["MainMenu::kQuit"], std::make_format_args(MainMenu::Options::kQuit));
+        std::cout << std::vformat(context.language["MainMenu::kLanguage"], std::make_format_args(MainMenu::Options::kLanguage));
 
-        std::cout << MainMenu::kPrompt;
+        std::cout << context.language["MainMenu::kPrompt"];
 
         int userSelection = 0;
         std::cin >> userSelection;
@@ -28,16 +31,53 @@ namespace GameStates
                 next = { &stateEnteringBoardMeasures };
                 break;
             case MainMenu::Options::kQuit:
-                std::cout << MainMenu::kThanksForPlaying;
+                std::cout << context.language["MainMenu::kThanksForPlaying"];
                 next = { nullptr };
                 break;
+            case 3:
+                next = { &stateChangeLanguage };
+                break;
             default:
-                std::cout << MainMenu::kInvalidOption;
-                std::cout << MainMenu::kPrompt;
+                std::cout << context.language["MainMenu::kInvalidOption"];
+                std::cout << context.language["MainMenu::kPrompt"];
                 next = context.currentState;
                 break;
         }
         return next;
+    }
+
+    NextState stateChangeLanguage(GameContext& context)
+    {
+        std::cout << languages::kHeader;
+        std::cout << std::format(languages::kEnglish, languages::options::kEnglish);
+        std::cout << std::format(languages::kSpanish, languages::options::kSpanish);
+        std::cout << std::format(languages::kFrench, languages::options::kFrench);
+
+        std::cout << context.language["MainMenu::kPrompt"];
+
+        int languageSelected = 0;
+        std::cin >> languageSelected;
+
+        Language language;
+
+        switch (languageSelected)
+        {
+        case languages::options::kEnglish:
+            language = json_utils::loadLanguage("../resources/minefield/en.json");
+            break;
+        case languages::options::kSpanish:
+            language = json_utils::loadLanguage("../resources/minefield/es.json");
+            break;
+        case languages::options::kFrench:
+            language = json_utils::loadLanguage("../resources/minefield/fr.json");
+            break;
+        }
+        
+        context.language = language;
+
+        std::cout << '\n' << context.language["languages::kSet"] << '\n';
+
+        return { &stateMainMenuUpdate };
     }
 
     NextState stateEnteringBoardMeasures(GameContext& context)

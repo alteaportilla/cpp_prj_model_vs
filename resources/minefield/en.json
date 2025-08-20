@@ -1,0 +1,100 @@
+{
+  "languages": {
+    "kSet": "Language was set successfully!\n"
+  },
+  "MainMenu": {
+    "kHeader": "\nMINEFIELD GAME\n",
+    "kStart": "{} - Start a new game\n",
+    "kQuit": "{} - Quit\n",
+    "kLanguage": "{} - Change language\n",
+    "kPrompt": "\nEnter your choice: ",
+    "kThanksForPlaying": "Thanks for playing!\n",
+    "kInvalidOption": "Invalid option. Please try again.\n"
+  },
+  "BoardConfig": {
+    "kHeader": "BOARD SETUP\n",
+    "kConfigMsg": "Configure the game board size\n",
+    "kEnterWidth": "Width (enter a number between {} and {}): ",
+    "kEnterHeight": "Height (enter a number between {} and {}): ",
+    "kSetMsg": "Board size set to {}x{}\n"
+  },
+  "MineConfig": {
+    "kHeader": "MINE CONFIGURATION\n",
+    "kExplain": "Each player will place the same number of mines.\n",
+    "kEnterMines": "Enter number of mines (between {} and {}): "
+  },
+  "PlayerCreation": {
+    "kHeader": "PLAYER CREATION\n",
+    "kNamePrompt": "Enter player name or {} to finish: ",
+    "kTypePrompt": "Select type for {} ('{}' for human or '{}' for PC): ",
+    "kInvalidType": "Invalid type. Please enter '{}' or '{}': ",
+    "kAdded": "Player {} was successfully added to the game!\n",
+    "kPCAdded": "{} will be playing against {}!\n",
+    "kCreated": "{} player(s) were created!\n",
+    "kZeroAdded": "No players have been added to the game!\n",
+    "kPCName": "PC",
+    "kRepeatedName": "Enter a new name. '{}' was already used!\n"
+  },
+  "PuttingMines": {
+    "kHeader": "PUTTING MINES\n",
+    "kFirstRound": "FIRST ROUND\n",
+    "kRoundNumber": "ROUND NO. {}\n",
+    "kPlayersWillPlaceMines": "Players will place {} mine(s)!\n",
+    "kNoAvailableMines": "There are no available mines to place!\n",
+    "kPlayerTurn": "It's {}'s turn to place mines\n",
+    "kMessage": "Mine {} of {}\n",
+    "kSuccessMessage": "{} placed a mine at ({}, {})\n"
+  },
+  "ProcessingMines": {
+    "kHeader": "PROCESSING MINES\n",
+    "kNoCollisions": "There haven't been any mine collisions!\n",
+    "kColissionMsg": "Boom! There has been a collision at ({},{})\n"
+  },
+  "GuessingMines": {
+    "kHeader": "IT'S TIME TO GUESS MINES\n",
+    "kTotalMsg": "All players have the same amount of guesses = {}\n",
+    "kPlayerTurn": "It's {}'s turn to guess mines!\n",
+    "kSuccess": "{} guessed a mine at ({},{})\n"
+  },
+  "ProcessingGuesses": {
+    "kHeader": "PROCESSING GUESSES\n",
+    "kPlayerHeader": "{}'s guesses\n",
+    "kHitOwnMine": "{} hit their OWN mine at ({},{})!",
+    "kMinesRemaining": "   -> Mines remaining: {}",
+    "kHitOpponentMine": "{} found an opponent's mine at ({},{})",
+    "kItWasPlayersMine": "   -> It was {}'s mine!",
+    "kMiss": "{} missed at ({},{})\n",
+    "kCurrentScoresHeader": "CURRENT SCORES\n",
+    "kScoreLine": "{}: {} opponent mines found, {} own mines hit\n"
+  },
+  "Results": {
+    "kHeader": "ROUND {} RESULTS\n",
+    "kPlayerInformation": "{}: \n - Found {} of {} opponent mines\n - Has {} mines left to place\n",
+    "kHeaderGameOverWinner": "GAME OVER - WE HAVE A WINNER!\n",
+    "kWinnerWins": "{} WINS!\n",
+    "kCongratulations": "Congratulations on finding all opponent mines!\n",
+    "kTie": "It's a TIE!\n",
+    "kWinnersListHeader": "Winners:\n",
+    "kWinnerListItem": "  - {}\n",
+    "kHeaderGameOver": "GAME OVER\n",
+    "kWinnerByElimination": "{} wins by elimination!\n",
+    "kNoPlayersRemainingTie": "No players remaining!\n",
+    "kHeaderGameOverBoardFull": "GAME OVER - BOARD FULL\n",
+    "kNoMorePositions": "No more positions available for mines!\n",
+    "kFinalScores": "Final scores:\n",
+    "kScoreOfPlayer": "- {}: {} points\n",
+    "kWinnerByPoints": "Winner by points: {}\n",
+    "kProceedRound": "Proceeding to round {}...\n"
+  },
+  "utilsMsg": {
+    "kEnterXValue": "Enter X value (between {} and {}): ",
+    "kEnterYValue": "Enter Y value (between {} and {}): ",
+    "kTryAgain": "Try again.",
+    "kAlreadyGuessedMessage": "Position was already guessed.\n",
+    "kAlreadyDetectedMessage": "Mine was already detected here.\n",
+    "kRemovedMessage": "Mines were removed from here.\n",
+    "kBoardOfPlayerPrompt": "Board of player {}:\n",
+    "kEmptyBoard": "Board wasn't initialized!\n",
+    "kEmptyPlayers": "The list of players is empty!!\n"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "languages": {
+    "kSet": "El idioma se configuro correctamente!"
+  },
+  "MainMenu": {
+    "kHeader": "\nJUEGO DE MINAS\n",
+    "kStart": "{} - Iniciar un nuevo juego\n",
+    "kQuit": "{} - Salir\n",
+    "kLanguage": "{} - Cambiar idioma\n",
+    "kPrompt": "\nIngresa tu opcion: ",
+    "kThanksForPlaying": "\nGracias por jugar!\n",
+    "kInvalidOption": "\nOpcion invalida. Por favor, intenta de nuevo.\n"
+  },
+  "BoardConfig": {
+    "kHeader": "CONFIGURACION DEL TABLERO\n",
+    "kConfigMsg": "Configura el tamano del tablero de juego\n",
+    "kEnterWidth": "Ancho (ingresa un numero entre {} y {}): ",
+    "kEnterHeight": "Altura (ingresa un numero entre {} y {}): ",
+    "kSetMsg": "Tamano del tablero establecido en {}x{}\n"
+  },
+  "MineConfig": {
+    "kHeader": "CONFIGURACION DE MINAS\n",
+    "kExplain": "Cada jugador colocara la misma cantidad de minas.\n",
+    "kEnterMines": "Ingresa el numero de minas (entre {} y {}): "
+  },
+  "PlayerCreation": {
+    "Options": {
+      "kStopCreation": "*",
+      "kHuman": "H",
+      "kPC": "P"
+    },
+    "kHeader": "CREACION DE JUGADORES\n",
+    "kNamePrompt": "Ingresa el nombre del jugador o {} para finalizar: ",
+    "kTypePrompt": "Selecciona el tipo para {} ('{}' para humano o '{}' para PC): ",
+    "kInvalidType": "Tipo invalido. Por favor, ingresa '{}' o '{}': ",
+    "kAdded": "El jugador {} fue agregado exitosamente al juego!",
+    "kPCAdded": "{} jugara contra {}!",
+    "kCreated": "{} jugador(es) fueron creados!",
+    "kZeroAdded": "No se han agregado jugadores al juego!",
+    "kPCName": "PC",
+    "kRepeatedName": "Ingresa un nuevo nombre. '{}' ya fue utilizado!"
+  },
+  "PuttingMines": {
+    "kHeader": "COLOCANDO MINAS",
+    "kFirstRound": "PRIMER RONDA",
+    "kRoundNumber": "RONDA NO. {}",
+    "kPlayersWillPlaceMines": "Los jugadores colocaran {} mina(s)!",
+    "kNoAvailableMines": "No hay minas disponibles para colocar!",
+    "kPlayerTurn": "Es el turno de {} para colocar minas",
+    "kMessage": "Mina {} de {}",
+    "kSuccessMessage": "{} coloco una mina en ({}, {})"
+  },
+  "ProcessingMines": {
+    "kHeader": "PROCESANDO MINAS",
+    "kNoCollisions": "No ha habido colisiones de minas!",
+    "kColissionMsg": "Boom! Ha habido una colision en ({},{})"
+  },
+  "GuessingMines": {
+    "kHeader": "ES HORA DE ADIVINAR MINAS",
+    "kTotalMsg": "Todos los jugadores tienen la misma cantidad de conjeturas = {}",
+    "kPlayerTurn": "Es el turno de {} para adivinar minas!",
+    "kSuccess": "{} adivino una mina en ({},{})"
+  },
+  "ProcessingGuesses": {
+    "kHeader": "PROCESANDO CONJETURAS",
+    "kPlayerHeader": "Conjeturas de {}",
+    "kHitOwnMine": "{} golpeo su PROPIA mina en ({},{})!",
+    "kMinesRemaining": "   -> Minas restantes: {}",
+    "kHitOpponentMine": "{} encontro una mina de un oponente en ({},{})",
+    "kItWasPlayersMine": "   -> Era la mina de {}!",
+    "kMiss": "{} fallo en ({},{})",
+    "kCurrentScoresHeader": "PUNTUACIONES ACTUALES",
+    "kScoreLine": "{}: {} minas de oponentes encontradas, {} minas propias golpeadas"
+  },
+  "Results": {
+    "kHeader": "RESULTADOS DE LA RONDA {}",
+    "kPlayerInformation": "{}: \n - Encontro {} de {} minas de oponentes\n - Tiene {} minas restantes para colocar",
+    "kHeaderGameOverWinner": "FIN DEL JUEGO - TENEMOS UN GANADOR!",
+    "kWinnerWins": "{} GANA!",
+    "kCongratulations": "Felicidades por encontrar todas las minas de oponentes!",
+    "kTie": "Es un EMPATE!",
+    "kWinnersListHeader": "Ganadores:",
+    "kWinnerListItem": "  - {}",
+    "kHeaderGameOver": "FIN DEL JUEGO",
+    "kWinnerByElimination": "{} gana por eliminacion!",
+    "kNoPlayersRemainingTie": "No quedan jugadores!",
+    "kHeaderGameOverBoardFull": "FIN DEL JUEGO - TABLERO LLENO",
+    "kNoMorePositions": "No hay mas posiciones disponibles para minas!",
+    "kFinalScores": "Puntuaciones finales:",
+    "kScoreOfPlayer": "- {}: {} puntos",
+    "kWinnerByPoints": "Ganador por puntos: {}",
+    "kProceedRound": "Procediendo a la ronda {}..."
+  },
+  "utilsMsg": {
+    "kEnterXValue": "Ingresa el valor de X (entre {} y {}): ",
+    "kEnterYValue": "Ingresa el valor de Y (entre {} y {}): ",
+    "kTryAgain": "Intenta de nuevo.",
+    "kAlreadyGuessedMessage": "La posicion ya fue adivinada.",
+    "kAlreadyDetectedMessage": "La mina ya fue detectada aqui.",
+    "kRemovedMessage": "Las minas fueron removidas de aqui.",
+    "kBoardOfPlayerPrompt": "Tablero del jugador {}:",
+    "kEmptyBoard": "El tablero no fue inicializado!",
+    "kEmptyPlayers": "La lista de jugadores esta vacia!!"
+  }
+}
