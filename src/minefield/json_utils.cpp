@@ -3,7 +3,6 @@
 
 #include <fstream>
 #include <minefield/json_utils.h>
-//#include <nlohmann/json.hpp>
 
 namespace json_utils
 {
@@ -27,8 +26,6 @@ void addToDictionary(nlohmann::json const& data, Language& dictionary, std::stri
     for (auto& el : data.items())
     {
         std::string currentKey;
-
-        // Usar un if normal en lugar del operador ternario
         if (prefix.empty())
         {
             currentKey = el.key();
@@ -40,11 +37,11 @@ void addToDictionary(nlohmann::json const& data, Language& dictionary, std::stri
 
         if (el.value().is_object())
         {
-            addToDictionary(el.value(), dictionary, currentKey); // Llamada recursiva para objetos anidados
+            addToDictionary(el.value(), dictionary, currentKey);
         }
         else
         {
-            dictionary[currentKey] = el.value(); // Almacenar como cadena
+            dictionary[currentKey] = el.value();
         }
     }
 }
