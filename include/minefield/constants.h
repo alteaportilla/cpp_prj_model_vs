@@ -1,19 +1,38 @@
 #pragma once
 
+namespace languages
+{
+
+namespace options
+{
+static int const kEnglish = 1;
+static int const kSpanish = 2;
+static int const kFrench = 3;
+}
+
+static constexpr char const* kHeader = "\nLANGUAGES\n\n";
+static constexpr char const* kEnglish = "{} - English\n";
+static constexpr char const* kSpanish = "{} - Spanish\n";
+static constexpr char const* kFrench = "{} - French\n";
+
+} // namespace language
+
 namespace MainMenu
 {
     namespace Options
     {
         static int const kStart = 1;
         static int const kQuit = 2;
+        static int const kLanguage = 3;
     }
 
-    static constexpr char const* kHeader = "\nMINEFIELD GAME\n\n";
-    static constexpr char const* kStart = "{} - Start a new game\n";
-    static constexpr char const* kQuit  = "{} - Quit\n";
-    static constexpr char const* kPrompt = "\nEnter your choice: ";
-    static constexpr char const* kThanksForPlaying = "\nThanks for playing!\n";
-    static constexpr char const* kInvalidOption = "\nInvalid option. Please try again.\n";
+    //static constexpr char const* kHeader = "\nMINEFIELD GAME\n\n";
+    //static constexpr char const* kStart = "{} - Start a new game\n";
+    //static constexpr char const* kQuit  = "{} - Quit\n";
+    //static constexpr char const* kLanguage = "{} - Change language\n";
+    //static constexpr char const* kPrompt = "\nEnter your choice: ";
+    //static constexpr char const* kThanksForPlaying = "\nThanks for playing!\n";
+    //static constexpr char const* kInvalidOption = "\nInvalid option. Please try again.\n";
 }
 
 namespace Display

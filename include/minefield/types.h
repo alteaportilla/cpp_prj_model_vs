@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 template <typename T, typename TagT>
 class StrongType
@@ -80,6 +81,7 @@ typedef std::vector<Player> Players;
 typedef State NextState;
 typedef NextState (*StateUpdateFn)(GameContext&);
 typedef void (*EnterMineFn)(GameContext&, Player&);
+typedef std::unordered_map<std::string, std::string> Language;
 
 // used in utils.cpp
 
@@ -121,5 +123,6 @@ struct GameContext
     MinesCount mines{0};
     MinesCount initialMines{0};
     Players players;
+    Language language;
 };
 

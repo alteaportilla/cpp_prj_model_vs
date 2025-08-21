@@ -35,6 +35,19 @@ foreach(_data_file IN ITEMS ${data_files})
     file(COPY ${_data_file} DESTINATION ${CMAKE_BINARY_DIR}/data)
 endforeach()
 
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.12.0
+)
+FetchContent_MakeAvailable(nlohmann_json)
+if(NOT TARGET nlohmann_json)
+    add_subdirectory(${nlohmann_json_SOURCE_DIR} ${nlohmann_json_BINARY_DIR})
+endif()
+include_directories((${nlohmann_json_SOURCE_DIR}/include/))
+
+set_target_properties(nlohmann_json PROPERTIES FOLDER "_external/json/")
+
 # set(project_config_<subproject>_type SHARED) # Change a specific subproject to STATIC[default], SHARED, EXE
 # set(project_config_<subproject>_link_libraries "example") # Set libraries to be linked for a specific subproject
 # set(project_config_<subproject>_dependencies "example") # Set other targets as dependencies for a specific subproject

@@ -5,6 +5,7 @@
 namespace GameStates
 {
     State stateMainMenuUpdate (GameContext& context);
+    State stateChangeLanguage(GameContext& context);
     State stateEnteringBoardMeasures (GameContext& context);
     State stateEnteringMineCount (GameContext& context);
     State stateCreatingPlayers (GameContext& context);
