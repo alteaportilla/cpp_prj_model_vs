@@ -1,6 +1,10 @@
 {
   "languages": {
-    "kSet": "El idioma se configuro correctamente!"
+    "kHeader": "\nIDIOMAS\n\n",
+    "kEnglish": "{} - Ingles\n",
+    "kSpanish": "{} - Espanol\n",
+    "kFrench": "{} - Frances\n",
+    "kSet": "El idioma se establecio exitosamente!\n"
   },
   "MainMenu": {
     "kHeader": "\nJUEGO DE MINAS\n",
@@ -24,11 +28,6 @@
     "kEnterMines": "Ingresa el numero de minas (entre {} y {}): "
   },
   "PlayerCreation": {
-    "Options": {
-      "kStopCreation": "*",
-      "kHuman": "H",
-      "kPC": "P"
-    },
     "kHeader": "CREACION DE JUGADORES\n",
     "kNamePrompt": "Ingresa el nombre del jugador o {} para finalizar: ",
     "kTypePrompt": "Selecciona el tipo para {} ('{}' para humano o '{}' para PC): ",
@@ -41,14 +40,14 @@
     "kRepeatedName": "Ingresa un nuevo nombre. '{}' ya fue utilizado!"
   },
   "PuttingMines": {
-    "kHeader": "COLOCANDO MINAS",
-    "kFirstRound": "PRIMER RONDA",
-    "kRoundNumber": "RONDA NO. {}",
-    "kPlayersWillPlaceMines": "Los jugadores colocaran {} mina(s)!",
-    "kNoAvailableMines": "No hay minas disponibles para colocar!",
-    "kPlayerTurn": "Es el turno de {} para colocar minas",
-    "kMessage": "Mina {} de {}",
-    "kSuccessMessage": "{} coloco una mina en ({}, {})"
+    "kHeader": "COLOCANDO MINAS\n",
+    "kFirstRound": "PRIMER RONDA\n",
+    "kRoundNumber": "RONDA NO. {}\n",
+    "kPlayersWillPlaceMines": "Los jugadores colocaran {} mina(s)!\n",
+    "kNoAvailableMines": "No hay minas disponibles para colocar!\n",
+    "kPlayerTurn": "Es el turno de {} para colocar minas\n",
+    "kMessage": "Mina {} de {}\n",
+    "kSuccessMessage": "{} coloco una mina en ({}, {})\n"
   },
   "ProcessingMines": {
     "kHeader": "PROCESANDO MINAS",
