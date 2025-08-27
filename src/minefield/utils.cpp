@@ -22,17 +22,18 @@ void enterMine(GameContext& context, Player& player)
 {
     if (context.board.empty())
     {
-        std::cout << std::format(utilsMsg::kEmptyBoard);
+        std::cout << context.language["utilsMsg::kEmptyBoard"];
     }
 
     for (unsigned int i = 0; i < context.mines.getValue(); i++)
     {
-        std::cout << std::format(PuttingMines::kMessage, (i + 1), context.mines.getValue());
+        unsigned int iPlus1 = i + 1;
+        std::cout << std::vformat(context.language["PuttingMines::kMessage"], std::make_format_args(iPlus1, context.mines.getValue()));
 
-        MinePosition minePosition = utils::board::validBoardPositionState(context.width, context.height, player);
+        MinePosition minePosition = utils::board::validBoardPositionState(context.language, context.width, context.height, player);
         context.board[minePosition.x][minePosition.y] = minePosition;
 
-        std::cout << std::format(PuttingMines::kSuccessMessage, player.name, minePosition.x, minePosition.y);
+        std::cout << std::vformat(context.language["PuttingMines::kSuccessMessage"], std::make_format_args(player.name, minePosition.x, minePosition.y));
 
         player.placedMines.push_back(minePosition);
     }
@@ -40,60 +41,60 @@ void enterMine(GameContext& context, Player& player)
     utils::player::saveMines(player);
 }
 
-bool hasOnePlayer(Players const& players)
+bool hasOnePlayer(Language& language, Players const& players)
 {
     if (players.size() > 1)
     {
         return false;
     }
 
-    std::cout << Results::kHeaderGameOver;
+    std::cout << language["Results::kHeaderGameOver"];
 
     if (players.size() == 1)
     {
-        std::cout << std::format(Results::kWinnerByElimination, players[0].name);
+        std::cout << std::vformat(language["Results::kWinnerByElimination"], std::make_format_args(players[0].name));
     }
     else
     {
-        std::cout << Results::kNoPlayersRemainingTie;
+        std::cout << language["Results::kNoPlayersRemainingTie"];
     }
 
     return true;
 }
 
-void handleOwnMine(Player& player, MinePosition const& mine, Board& board)
+void handleOwnMine(Language& language, Player& player, MinePosition const& mine, Board& board)
 {
     if (board.empty())
     {
-        std::cout << std::format(utilsMsg::kEmptyBoard);
+        std::cout << language["utilsMsg::kEmptyBoard"];
     }
 
-    std::cout << std::format(ProcessingGuesses::kHitOwnMine, player.name, mine.x, mine.y);
+    std::cout << std::vformat(language["ProcessingGuesses::kHitOwnMine"], std::make_format_args(player.name, mine.x, mine.y));
     player.ownMinesDetected.setValue(player.ownMinesDetected.getValue() + 1);
 
     if (player.remainingMines.getValue() > 0)
     {
-        std::cout << std::format(ProcessingGuesses::kMinesRemaining, player.remainingMines.getValue());
+        std::cout << std::vformat(language["ProcessingGuesses::kMinesRemaining"], std::make_format_args(player.remainingMines.getValue()));
         player.remainingMines.setValue(player.remainingMines.getValue() - 1);
         board[mine.x][mine.y].state = PositionState::Removed;
     }
 }
 
-void handleOpponentMine(Player& player, MinePosition const& mine, Board& board, Players const& players)
+void handleOpponentMine(Language& language, Player& player, MinePosition const& mine, Board& board, Players const& players)
 {
     if (board.empty())
     {
-        std::cout << std::format(utilsMsg::kEmptyBoard);
+        std::cout << language["utilsMsg::kEmptyBoard"];
     }
 
     if (players.empty())
     {
-        std::cout << std::format(utilsMsg::kEmptyPlayers);
+        std::cout << language["utilsMsg::kEmptyPlayers"];
     }
 
     // If the position has a mine, the player detected a mine from other player
 
-    std::cout << std::format(ProcessingGuesses::kHitOpponentMine, player.name, mine.x, mine.y);
+    std::cout << std::vformat(language["ProcessingGuesses::kHitOpponentMine"], std::make_format_args(player.name, mine.x, mine.y));
     player.opponentMinesDetected.setValue(player.opponentMinesDetected.getValue() + 1);
     board[mine.x][mine.y].state = PositionState::GuessedMine;
 
@@ -101,20 +102,20 @@ void handleOpponentMine(Player& player, MinePosition const& mine, Board& board, 
     {
         if (opponent.name != player.name && utils::player::isMineFromPlayer(mine, opponent.placedMines))
         {
-            std::cout << std::format(ProcessingGuesses::kItWasPlayersMine, opponent.name);
+            std::cout << std::vformat(language["ProcessingGuesses::kItWasPlayersMine"], std::make_format_args(opponent.name));
             break;
         }
     }
 }
 
-void handleMiss(Player const& player, MinePosition const& mine, Board& board)
+void handleMiss(Language& language, Player const& player, MinePosition const& mine, Board& board)
 {
     if (board.empty())
     {
-        std::cout << std::format(utilsMsg::kEmptyBoard);
+        std::cout << language["utilsMsg::kEmptyBoard"];
     }
 
-    std::cout << std::format(ProcessingGuesses::kMiss, player.name, mine.x, mine.y);
+    std::cout << std::vformat(language["ProcessingGuesses::kMiss"], std::make_format_args(player.name, mine.x, mine.y));
     board[mine.x][mine.y].state = PositionState::GuessedEmpty;
 }
 
@@ -123,16 +124,17 @@ void handleMiss(Player const& player, MinePosition const& mine, Board& board)
 namespace player
 {
 
-Player getPCPlayer(MinesCount initialMines)
+Player getPCPlayer(Language& language, MinesCount initialMines)
 {
     char type = PlayerCreation::Options::kPC;
-    Player player = utils::player::createPlayer(PlayerCreation::kPCName, initialMines, type);
+    std::string PCName = language["PlayerCreation::kPCName"];
+    Player player = utils::player::createPlayer(PCName, initialMines, type);
     return player;
 }
 
-void addPlayers(Players& players, MinesCount initialMines)
+void addPlayers(Language& language, Players& players, MinesCount initialMines)
 {
-    std::string message = std::format(PlayerCreation::kNamePrompt, PlayerCreation::Options::kStopCreation);
+    std::string message = std::vformat(language["PlayerCreation::kNamePrompt"], std::make_format_args(PlayerCreation::Options::kStopCreation));
     auto name = utils::enterValue<std::string>(message);
 
     // PlayerCreation::Options::kStopCreation is a char '*'
@@ -144,17 +146,17 @@ void addPlayers(Players& players, MinesCount initialMines)
     {
         if (utils::player::nameExists(name, players))
         {
-            std::cout << std::format(PlayerCreation::kRepeatedName, name);
+            std::cout << std::vformat(language["PlayerCreation::kRepeatedName"], std::make_format_args(name));
         }
         else
         {
-            char type = utils::player::getType(name);
+            char type = utils::player::getType(language, name);
 
             Player newPlayer = createPlayer(name, initialMines, type);
 
             players.push_back(newPlayer);
 
-            std::cout << std::format(PlayerCreation::kAdded, name);
+            std::cout << std::vformat(language["PlayerCreation::kAdded"], std::make_format_args(name));
         }
 
         name = utils::enterValue<std::string>(message);
@@ -178,14 +180,14 @@ bool isTypeValid(char type)
     return (type == PlayerCreation::Options::kHuman || type == PlayerCreation::Options::kPC);
 }
 
-char getType(std::string const& name)
+char getType(Language& language, std::string const& name)
 {
-    std::string message = std::format(PlayerCreation::kTypePrompt, name, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
+    std::string message = std::vformat(language["PlayerCreation::kTypePrompt"], std::make_format_args(name, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC));
     auto type = utils::enterValue<char>(message);
 
     while (!isTypeValid(type))
     {
-        message = std::format(PlayerCreation::kInvalidType, PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC);
+        message = std::vformat(language["PlayerCreation::kInvalidType"], std::make_format_args(PlayerCreation::Options::kHuman, PlayerCreation::Options::kPC));
         type = utils::enterValue<char>(message);
     }
 
@@ -221,7 +223,7 @@ void saveGuesses(Player& player)
     }
 }
 
-Player const* getTopScorer(Players const& players)
+Player const* getTopScorer(Language& language, Players const& players)
 {
     Player const* topPlayer = nullptr;
 
@@ -231,7 +233,7 @@ Player const* getTopScorer(Players const& players)
     {
         unsigned int score = player.opponentMinesDetected.getValue() - player.ownMinesDetected.getValue();
 
-        std::cout << std::format(Results::kScoreOfPlayer, player.name, score);
+        std::cout << std::vformat(language["Results::kScoreOfPlayer"], std::make_format_args(player.name, score));
 
         if (score > maxScore)
         {
@@ -243,27 +245,27 @@ Player const* getTopScorer(Players const& players)
     return topPlayer;
 }
 
-bool areThereWinners(Players const& winners)
+bool areThereWinners(Language& language, Players const& winners)
 {
     if (winners.empty())
     {
         return false;
     }
 
-    std::cout << Results::kHeaderGameOverWinner;
+    std::cout << language["Results::kHeaderGameOverWinner"];
 
     if (winners.size() == 1)
     {
-        std::cout << std::format(Results::kWinnerWins, winners[0].name);
-        std::cout << Results::kCongratulations;
+        std::cout << std::vformat(language["Results::kWinnerWins"], std::make_format_args(winners[0].name));
+        std::cout << language["Results::kCongratulations"];
     }
     else
     {
-        std::cout << Results::kTie;
-        std::cout << Results::kWinnersListHeader;
+        std::cout << language["Results::kTie"];
+        std::cout << language["Results::kWinnersListHeader"];
         for (auto const& winner : winners)
         {
-            std::cout << std::format(Results::kWinnerListItem, winner.name);
+            std::cout << std::vformat(language["Results::kWinnerListItem"], std::make_format_args(winner.name));
         }
     }
 
@@ -351,7 +353,7 @@ bool hasEmptyPositions(Width width, Height height, Board const& board)
     return false;
 }
 
-bool isFull(Width width, Height height, Board const& board, Players const& players)
+bool isFull(Language& language, Width width, Height height, Board const& board, Players const& players)
 {
     if (utils::board::hasEmptyPositions(width, height, board))
     {
@@ -361,15 +363,15 @@ bool isFull(Width width, Height height, Board const& board, Players const& playe
     // If the game ended because of the board being full,
     // the winner is determined by the number of mines it guessed
 
-    std::cout << Results::kHeaderGameOverBoardFull;
-    std::cout << Results::kNoMorePositions;
-    std::cout << Results::kFinalScores;
+    std::cout << language["Results::kHeaderGameOverBoardFull"];
+    std::cout << language["Results::kNoMorePositions"];
+    std::cout << language["Results::kFinalScores"];
 
-    Player const* topPlayer = utils::player::getTopScorer(players);
+    Player const* topPlayer = utils::player::getTopScorer(language, players);
 
     if (topPlayer != nullptr)
     {
-        std::cout << std::format(Results::kWinnerByPoints, topPlayer->name);
+        std::cout << std::vformat(language["Results::kWinnerByPoints"], std::make_format_args(topPlayer->name));
     }
 
     return true;
@@ -434,13 +436,15 @@ MinePosition getRandomBoardPosition(Width width, Height height)
     return {xPos, yPos};
 }
 
-MinePosition enterBoardPosition(Width width, Height height, Player const& player, RandomPosFn randomPos)
+MinePosition enterBoardPosition(Language& language, Width width, Height height, Player const& player, RandomPosFn randomPos)
 {
     MinePosition minePosition;
     if (player.type == PlayerType::HumanPlayer)
     {
-        auto xPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterXValue, static_cast<unsigned int>(0), (width.getValue() - 1));
-        auto yPos = utils::enterValueInRange<unsigned int>(utilsMsg::kEnterYValue, static_cast<unsigned int>(0), (height.getValue() - 1));
+        std::string msgX = language["utilsMsg::kEnterXValue"];
+        auto xPos = utils::enterValueInRange<unsigned int>(language, msgX, static_cast<unsigned int>(0), (width.getValue() - 1));
+        std::string msgY = language["utilsMsg::kEnterYValue"];
+        auto yPos = utils::enterValueInRange<unsigned int>(language, msgY, static_cast<unsigned int>(0), (height.getValue() - 1));
         minePosition = {xPos, yPos};
     }
     else if (player.type == PlayerType::PC)
@@ -450,19 +454,19 @@ MinePosition enterBoardPosition(Width width, Height height, Player const& player
     return minePosition;
 }
 
-std::string showInvalidBoardPositionStateReason(PositionState const& state)
+std::string showInvalidBoardPositionStateReason(Language& language, PositionState const& state)
 {
     std::string message;
     switch (state)
     {
     case PositionState::GuessedEmpty:
-        message = utilsMsg::kAlreadyGuessedMessage;
+        message = language["utilsMsg::kAlreadyGuessedMessage"];
         break;
     case PositionState::GuessedMine:
-        message = utilsMsg::kAlreadyDetectedMessage;
+        message = language["utilsMsg::kAlreadyDetectedMessage"];
         break;
     case PositionState::Removed:
-        message = utilsMsg::kRemovedMessage;
+        message = language["utilsMsg::kRemovedMessage"];
         break;
     default:
         break;
@@ -475,14 +479,14 @@ bool isInvalidBoardPositionState(PositionState const& state)
     return (state == PositionState::GuessedEmpty || state == PositionState::GuessedMine || state == PositionState::Removed);
 }
 
-MinePosition validBoardPositionState(Width width, Height height, Player const& player)
+MinePosition validBoardPositionState(Language& language, Width width, Height height, Player const& player)
 {
-    MinePosition minePosition = enterBoardPosition(width, height, player, getRandomBoardPosition);
+    MinePosition minePosition = enterBoardPosition(language, width, height, player, getRandomBoardPosition);
 
     while (isInvalidBoardPositionState(minePosition.state))
     {
-        showInvalidBoardPositionStateReason(minePosition.state);
-        minePosition = enterBoardPosition(width, height, player, getRandomBoardPosition);
+        showInvalidBoardPositionStateReason(language, minePosition.state);
+        minePosition = enterBoardPosition(language, width, height, player, getRandomBoardPosition);
     }
 
     minePosition.state = PositionState::WithMine;

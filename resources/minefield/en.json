@@ -1,5 +1,9 @@
 {
   "languages": {
+    "kHeader": "\nLANGUAGES\n\n",
+    "kEnglish": "{} - English\n",
+    "kSpanish": "{} - Spanish\n",
+    "kFrench": "{} - French\n",
     "kSet": "Language was set successfully!\n"
   },
   "MainMenu": {

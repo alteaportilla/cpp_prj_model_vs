@@ -1,122 +1,104 @@
 {
   "languages": {
-    "kSet": "La langue a ete definie avec success!\n"
+    "kHeader": "\nLANGUES\n\n",
+    "kEnglish": "{} - Anglais\n",
+    "kSpanish": "{} - Espagnol\n",
+    "kFrench": "{} - Francoise\n",
+    "kSet": "La langue a ete établie avec succes!\n"
   },
   "MainMenu": {
-    "Options": {
-      "kStart": 1,
-      "kQuit": 2
-    },
-    "kHeader": "JEU DE MINES\n",
-    "kStart": "{} - D�marrer un nouveau jeu\n",
+    "kHeader": "\nMINE GAME\n",
+    "kStart": "{} - Demarrer une nouvelle partie\n",
     "kQuit": "{} - Quitter\n",
-    "kLanguage": "Changer de langue",
-    "kPrompt": "Entrez votre choix : ",
-    "kThanksForPlaying": "Merci d'avoir jou� !\n",
-    "kInvalidOption": "Option invalide. Veuillez r�essayer.\n"
-  },
-  "Display": {
-    "kBoardColWidth": 3
+    "kLanguage": "{} - Changer de langue\n",
+    "kPrompt": "\nSaisissez votre option :",
+    "kThanksForPlaying": "\nMerci d'avoir joue !\n",
+    "kInvalidOption": "\nOption non valide. Veuillez reessayer.\n"
   },
   "BoardConfig": {
-    "Limits": {
-      "kMinWidth": 24,
-      "kMaxWidth": 50,
-      "kMinHeight": 24,
-      "kMaxHeight": 50
-    },
-    "kHeader": "CONFIGURATION DU TABLEAU\n",
-    "kConfigMsg": "Configurer la taille du tableau de jeu\n",
-    "kEnterWidth": "Largeur (entrez un nombre entre {} et {}): ",
-    "kEnterHeight": "Hauteur (entrez un nombre entre {} et {}): ",
-    "kSetMsg": "Taille du tableau d�finie � {}x{}\n"
+    "kHeader": "PARAMETRES DU PLATEAU\n",
+    "kConfigMsg": "Definir la taille du plateau de jeu\n",
+    "kEnterWidth": "Largeur (saisissez un nombre entre {} et {}) :",
+    "kEnterHeight": "Hauteur (saisissez un nombre entre {} et {}) : ",
+    "kSetMsg": "Taille du plateau definie sur {}x{}\n"
   },
   "MineConfig": {
-    "Limits": {
-      "kMin": 3,
-      "kMax": 8
-    },
     "kHeader": "CONFIGURATION DES MINES\n",
-    "kExplain": "Chaque joueur placera le m�me nombre de mines.\n",
-    "kEnterMines": "Entrez le nombre de mines (entre {} et {}): "
+    "kExplain": "Chaque joueur placera le meme nombre de mines.\n",
+    "kEnterMines": "Saisissez le nombre de mines (entre {} et {}) : "
   },
   "PlayerCreation": {
-    "Options": {
-      "kStopCreation": "*",
-      "kHuman": "H",
-      "kPC": "P"
-    },
-    "kHeader": "CR�ATION DE JOUEURS\n",
-    "kNamePrompt": "Entrez le nom du joueur ou {} pour terminer : ",
-    "kTypePrompt": "S�lectionnez le type pour {} ('{}' pour humain ou '{}' pour PC) : ",
-    "kInvalidType": "Type invalide. Veuillez entrer '{}' ou '{}': ",
-    "kAdded": "Le joueur {} a �t� ajout� avec succ�s au jeu !\n",
-    "kPCAdded": "{} jouera contre {} !\n",
-    "kCreated": "{} joueur(s) ont �t� cr��s !\n",
-    "kZeroAdded": "Aucun joueur n'a �t� ajout� au jeu !\n",
+    "kHeader": "CREATION DE JOUEUR\n",
+    "kNamePrompt": "Saisissez le nom du joueur ou {} pour terminer : ",
+    "kTypePrompt": "Selectionnez le type pour {} ('{}' pour humain) ou '{}' pour PC) : ",
+    "kInvalidType": "Type non valide. Veuillez saisir '{}' ou '{}' : ",
+    "kAdded": "Le joueur {} a ete ajouté à la partie !",
+    "kPCAdded": "{} jouera contre {} !",
+    "kCreated": "{} joueur(s) ont ete crees !",
+    "kZeroAdded": "Aucun joueur n'a ete ajoute à la partie !",
     "kPCName": "PC",
-    "kRepeatedName": "Entrez un nouveau nom. '{}' a d�j� �t� utilis� !\n"
+    "kRepeatedName": "Saisissez un nouveau nom. '{}' a déjà été pris !"
   },
   "PuttingMines": {
-    "kHeader": "PLACEMENT DES MINES\n",
-    "kFirstRound": "PREMI�RE RONDE\n",
-    "kRoundNumber": "RONDE N� {}\n",
-    "kPlayersWillPlaceMines": "Les joueurs placeront {} mine(s) !\n",
-    "kNoAvailableMines": "Il n'y a pas de mines disponibles � placer !\n",
-    "kPlayerTurn": "C'est le tour de {} de placer des mines\n",
-    "kMessage": "Mine {} de {}\n",
-    "kSuccessMessage": "{} a plac� une mine � ({}, {})\n"
+    "kHeader": "MINES PLAQUEES",
+    "kFirstRound": "PREMIER TOUR",
+    "kRoundNumber": "TOUR N° {}",
+    "kPlayersWillPlaceMines": "Les joueurs vont placer {} mine(s) !",
+    "kNoAvailableMines": "Aucune mine n'est disponible !",
+    "kPlayerTurn": "C'est au tour de {} de placer des mines",
+    "kMessage": "A moi !",
+    "kSuccessMessage": "{} a placé une mine a ({}, {})"
   },
   "ProcessingMines": {
-    "kHeader": "TRAITEMENT DES MINES\n",
-    "kNoCollisions": "Il n'y a pas eu de collisions de mines !\n",
-    "kColissionMsg": "Boum ! Il y a eu une collision � ({},{})\n"
+    "kHeader": "MINES EN COURS DE TRAITEMENT",
+    "kNoCollisions": "Aucune collision de mines n'a eu lieu !",
+    "kColissionMsg": "Boom ! Il y a eu une collision a ({},{})"
   },
   "GuessingMines": {
-    "kHeader": "IL EST TEMPS DE DEVINER LES MINES\n",
-    "kTotalMsg": "Tous les joueurs ont le m�me nombre de tentatives = {}\n",
-    "kPlayerTurn": "C'est le tour de {} de deviner les mines !\n",
-    "kSuccess": "{} a devin� une mine � ({},{})\n"
+    "kHeader": "A VOUS DE DEVINER LES MINES",
+    "kTotalMsg": "Tous les joueurs ont le meme nombre de suppositions = {}",
+    "kPlayerTurn": "C'est au tour de {} de deviner les mines !",
+    "kSuccess": "{} a devine une mine a ({},{})"
   },
   "ProcessingGuesses": {
-    "kHeader": "TRAITEMENT DES DEVINETTES\n",
-    "kPlayerHeader": "Devinettes de {}\n",
-    "kHitOwnMine": "{} a frapp� sa PROPRE mine � ({},{}) !",
-    "kMinesRemaining": "   -> Mines restantes : {}",
-    "kHitOpponentMine": "{} a trouv� une mine d'un adversaire � ({},{})",
-    "kItWasPlayersMine": "   -> C'�tait la mine de {} !",
-    "kMiss": "{} a rat� � ({},{})\n",
-    "kCurrentScoresHeader": "SCORES ACTUELS\n",
-    "kScoreLine": "{} : {} mines d'adversaires trouv�es, {} mines propres frapp�es\n"
+    "kHeader": "TRAITEMENT DES DEVINATIONS",
+    "kPlayerHeader": "Suppositions de {}",
+    "kHitOwnMine": "{} a touche sa PROPRE mine a ({},{}) !",
+    "kMinesRemaining": " -> Mines restantes : {}",
+    "kHitOpponentMine": "{} a trouvé la mine d'un adversaire a ({},{})",
+    "kItWasPlayersMine": " -> C'était a moi ! ",
+    "kMiss": "{} a rate ({},{})",
+    "kCurrentScoresHeader": "SCORES ACTUELS",
+    "kScoreLine": "{}: {} mines adverses trouvees, {} mines personnelles touchees"
   },
   "Results": {
-    "kHeader": "R�SULTATS DE LA RONDE {}\n",
-    "kPlayerInformation": "{} : \n - A trouv� {} de {} mines d'adversaires\n - A {} mines restantes � placer\n",
-    "kHeaderGameOverWinner": "FIN DU JEU - NOUS AVONS UN GAGNANT !\n",
-    "kWinnerWins": "{} GAGNE !\n",
-    "kCongratulations": "F�licitations pour avoir trouv� toutes les mines d'adversaires !\n",
-    "kTie": "C'est un �GALIT� !\n",
-    "kWinnersListHeader": "Gagnants :\n",
-    "kWinnerListItem": "  - {}\n",
-    "kHeaderGameOver": "FIN DU JEU\n",
-    "kWinnerByElimination": "{} gagne par �limination !\n",
-    "kNoPlayersRemainingTie": "Aucun joueur restant !\n",
-    "kHeaderGameOverBoardFull": "FIN DU JEU - TABLEAU PLEIN\n",
-    "kNoMorePositions": "Plus de positions disponibles pour les mines !\n",
-    "kFinalScores": "Scores finaux :\n",
-    "kScoreOfPlayer": "- {} : {} points\n",
-    "kWinnerByPoints": "Gagnant par points : {}\n",
-    "kProceedRound": "Passage � la ronde {}...\n"
+    "kHeader": "RESULTATS DE LA MANCHE {}",
+    "kPlayerInformation": "{}: \n - Mines adverses trouvees {}\n - Il reste {} mines a placer",
+    "kHeaderGameOverWinner": "JEU TERMINE - UN GAGNANT !",
+    "kWinnerWins": "{} A GAGNE !",
+    "kCongratulations": "Felicitations pour avoir trouve toutes les mines de votre adversaire ! ",
+    "kTie": "C'est un EGALITE !",
+    "kWinnersListHeader": "Gagnants :",
+    "kWinnerListItem": "- {}",
+    "kHeaderGameOver": "FIN DE PARTIE",
+    "kWinnerByElimination": "{} gagne par elimination !",
+    "kNoPlayersRemainingTie": "Aucun joueur restant !",
+    "kHeaderGameOverBoardFull": "FIN DE PARTIE - PLATEAU PLEIN",
+    "kNoMorePositions": "Plus de positions disponibles pour les mines !",
+    "kFinalScores": "Scores finaux :",
+    "kScoreOfPlayer": "- {} : {} points",
+    "kWinnerByPoints": "Vainqueur aux points : {}",
+    "kProceedRound": "Progression vers la manche {}..."
   },
   "utilsMsg": {
-    "kEnterXValue": "Entrez la valeur X (entre {} et {}): ",
-    "kEnterYValue": "Entrez la valeur Y (entre {} et {}): ",
-    "kTryAgain": "R�essayez.",
-    "kAlreadyGuessedMessage": "La position a d�j� �t� devin�e.\n",
-    "kAlreadyDetectedMessage": "La mine a d�j� �t� d�tect�e ici.\n",
-    "kRemovedMessage": "Les mines ont �t� retir�es d'ici.\n",
-    "kBoardOfPlayerPrompt": "Tableau du joueur {} :\n",
-    "kEmptyBoard": "Le tableau n'a pas �t� initialis� !\n",
-    "kEmptyPlayers": "La liste des joueurs est vide !!\n"
+    "kEnterXValue": "Saisissez la valeur de X (entre {} et {}):",
+    "kEnterYValue": "Saisissez la valeur de Y (entre {} et {}):",
+    "kTryAgain": "Reessayer.",
+    "kAlreadyGuessedMessage": "La position a deja ete devinee.",
+    "kAlreadyDetectedMessage": "La mine a dejà ete detectee ici.",
+    "kRemovedMessage": "Les mines ont ete retirees d'ici.",
+    "kBoardOfPlayerPrompt": "Plateau du joueur {}:",
+    "kEmptyBoard": "Le plateau n'a pas ete initialise !",
+    "kEmptyPlayers": "La liste des joueurs est vide !!!"
   }
 }
