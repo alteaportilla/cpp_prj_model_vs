@@ -14,12 +14,12 @@ namespace GameStates
 {
     NextState stateMainMenuUpdate(GameContext& context)
     {
-        std::cout << context.language["MainMenu::kHeader"] << '\n';
-        std::cout << std::vformat(context.language["MainMenu::kStart"], std::make_format_args(MainMenu::Options::kStart));
-        std::cout << std::vformat(context.language["MainMenu::kQuit"], std::make_format_args(MainMenu::Options::kQuit));
-        std::cout << std::vformat(context.language["MainMenu::kLanguage"], std::make_format_args(MainMenu::Options::kLanguage));
+        std::cout << context.language.at("MainMenu::kHeader") << '\n';
+        std::cout << std::vformat(context.language.at("MainMenu::kStart"), std::make_format_args(MainMenu::Options::kStart));
+        std::cout << std::vformat(context.language.at("MainMenu::kQuit"), std::make_format_args(MainMenu::Options::kQuit));
+        std::cout << std::vformat(context.language.at("MainMenu::kLanguage"), std::make_format_args(MainMenu::Options::kLanguage));
 
-        std::cout << context.language["MainMenu::kPrompt"];
+        std::cout << context.language.at("MainMenu::kPrompt");
 
         int userSelection = 0;
         std::cin >> userSelection;
@@ -31,15 +31,15 @@ namespace GameStates
                 next = { &stateEnteringBoardMeasures };
                 break;
             case MainMenu::Options::kQuit:
-                std::cout << context.language["MainMenu::kThanksForPlaying"];
+                std::cout << context.language.at("MainMenu::kThanksForPlaying");
                 next = { nullptr };
                 break;
             case MainMenu::Options::kLanguage:
                 next = { &stateChangeLanguage };
                 break;
             default:
-                std::cout << context.language["MainMenu::kInvalidOption"];
-                std::cout << context.language["MainMenu::kPrompt"];
+                std::cout << context.language.at("MainMenu::kInvalidOption");
+                std::cout << context.language.at("MainMenu::kPrompt");
                 next = context.currentState;
                 break;
         }
@@ -48,12 +48,12 @@ namespace GameStates
 
     NextState stateChangeLanguage(GameContext& context)
     {
-        std::cout << context.language["languages::kHeader"];
-        std::cout << std::vformat(context.language["languages::kEnglish"], std::make_format_args(languages::options::kEnglish));
-        std::cout << std::vformat(context.language["languages::kSpanish"], std::make_format_args(languages::options::kSpanish));
-        std::cout << std::vformat(context.language["languages::kFrench"], std::make_format_args(languages::options::kFrench));
+        std::cout << context.language.at("languages::kHeader");
+        std::cout << std::vformat(context.language.at("languages::kEnglish"), std::make_format_args(languages::options::kEnglish));
+        std::cout << std::vformat(context.language.at("languages::kSpanish"), std::make_format_args(languages::options::kSpanish));
+        std::cout << std::vformat(context.language.at("languages::kFrench"), std::make_format_args(languages::options::kFrench));
 
-        std::cout << context.language["MainMenu::kPrompt"];
+        std::cout << context.language.at("MainMenu::kPrompt");
 
         int languageSelected = 0;
         std::cin >> languageSelected;
@@ -75,32 +75,32 @@ namespace GameStates
         
         context.language = language;
 
-        std::cout << '\n' << context.language["languages::kSet"] << '\n';
+        std::cout << '\n' << context.language.at("languages::kSet") << '\n';
 
         return { &stateMainMenuUpdate };
     }
 
     NextState stateEnteringBoardMeasures(GameContext& context)
     {
-        std::cout << context.language["BoardConfig::kHeader"] << '\n';
-        std::cout << context.language["BoardConfig::kConfigMsg"] << '\n';
+        std::cout << context.language.at("BoardConfig::kHeader") << '\n';
+        std::cout << context.language.at("BoardConfig::kConfigMsg") << '\n';
 
-        context.width = Width(utils::enterValueInRange(context.language, context.language["BoardConfig::kEnterWidth"], BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth));
-        context.height = Height(utils::enterValueInRange(context.language, context.language["BoardConfig::kEnterHeight"], BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight));
+        context.width = Width(utils::enterValueInRange(context.language, context.language.at("BoardConfig::kEnterWidth"), BoardConfig::Limits::kMinWidth, BoardConfig::Limits::kMaxdWidth));
+        context.height = Height(utils::enterValueInRange(context.language, context.language.at("BoardConfig::kEnterHeight"), BoardConfig::Limits::kMinHeight, BoardConfig::Limits::kMaxHeight));
         
         utils::board::initialize(context.board, context.height, context.width);
 
-        std::cout << std::vformat(context.language["BoardConfig::kSetMsg"], std::make_format_args(context.width.getValue(), context.height.getValue()));
+        std::cout << std::vformat(context.language.at("BoardConfig::kSetMsg"), std::make_format_args(context.width.getValue(), context.height.getValue()));
 
         return { &stateEnteringMineCount };
     }
 
     NextState stateEnteringMineCount(GameContext &context)
     {
-        std::cout << context.language["MineConfig::kHeader"] << '\n';
-        std::cout << context.language["MineConfig::kExplain"] << '\n';
+        std::cout << context.language.at("MineConfig::kHeader") << '\n';
+        std::cout << context.language.at("MineConfig::kExplain") << '\n';
 
-        context.initialMines.setValue(utils::enterValueInRange(context.language, context.language["MineConfig::kEnterMines"], MineConfig::Limits::kMin, MineConfig::Limits::kMax));
+        context.initialMines.setValue(utils::enterValueInRange(context.language, context.language.at("MineConfig::kEnterMines"), MineConfig::Limits::kMin, MineConfig::Limits::kMax));
         context.mines = context.initialMines;
         
         return { &stateCreatingPlayers };
@@ -108,13 +108,13 @@ namespace GameStates
 
     NextState stateCreatingPlayers(GameContext& context)
     {
-        std::cout << context.language["PlayerCreation::kHeader"] << '\n';
+        std::cout << context.language.at("PlayerCreation::kHeader") << '\n';
 
         utils::player::addPlayers(context.language, context.players, context.initialMines);
 
         if (context.players.empty())
         {
-            std::cout << context.language["PlayerCreation::kZeroAdded"];
+            std::cout << context.language.at("PlayerCreation::kZeroAdded");
             return { nullptr };
         }
         else if (context.players.size() == 1)
@@ -122,12 +122,12 @@ namespace GameStates
             Player player = utils::player::getPCPlayer(context.language, context.initialMines);
             context.players.push_back(player);
 
-            std::cout << std::vformat(context.language["PlayerCreation::kPCAdded"], std::make_format_args(context.players[0].name, player.name));
+            std::cout << std::vformat(context.language.at("PlayerCreation::kPCAdded"), std::make_format_args(context.players[0].name, player.name));
         }
         else
         {
             unsigned int size = context.players.size();
-            std::cout << std::vformat(context.language["PlayerCreation::kCreated"], std::make_format_args(size));
+            std::cout << std::vformat(context.language.at("PlayerCreation::kCreated"), std::make_format_args(size));
         }
 
         return { &statePuttingMines };
@@ -137,11 +137,11 @@ namespace GameStates
     {
         if (context.players.empty())
         {
-            std::cout << context.language["utilsMsg::kEmptyPlayers"];
+            std::cout << context.language.at("utilsMsg::kEmptyPlayers");
             return { &stateCreatingPlayers };
         }
 
-        std::cout << context.language["PuttingMines::kHeader"];
+        std::cout << context.language.at("PuttingMines::kHeader");
 
         unsigned int minesToPlace = 0;
 
@@ -149,12 +149,12 @@ namespace GameStates
         {
             minesToPlace = context.initialMines.getValue();
 
-            std::cout << context.language["PuttingMines::kFirstRound"];
-            std::cout << std::vformat(context.language["PuttingMines::kPlayersWillPlaceMines"], std::make_format_args(minesToPlace));
+            std::cout << context.language.at("PuttingMines::kFirstRound");
+            std::cout << std::vformat(context.language.at("PuttingMines::kPlayersWillPlaceMines"), std::make_format_args(minesToPlace));
         }
         else
         {
-            std::cout << std::vformat(context.language["PuttingMines::kRoundNumber"], std::make_format_args(context.round.getValue()));
+            std::cout << std::vformat(context.language.at("PuttingMines::kRoundNumber"), std::make_format_args(context.round.getValue()));
 
             // If there are more than two players, the number of mines a player can guess 
             // is limited to the player with the fewest mines
@@ -163,23 +163,23 @@ namespace GameStates
 
             if (minesToPlace == 0)
             {
-                std::cout << context.language["PuttingMines::kNoAvailableMines"];
+                std::cout << context.language.at("PuttingMines::kNoAvailableMines");
                 return { nullptr };
             }
             else
             {
-                std::cout << std::vformat(context.language["PuttingMines::kPlayersWillPlaceMines"], std::make_format_args(minesToPlace));
+                std::cout << std::vformat(context.language.at("PuttingMines::kPlayersWillPlaceMines"), std::make_format_args(minesToPlace));
                 context.mines.setValue(minesToPlace); 
             }
         }
         
         for (auto& player : context.players)
         {
-            std::cout << std::vformat(context.language["PuttingMines::kPlayerTurn"], std::make_format_args(player.name));
+            std::cout << std::vformat(context.language.at("PuttingMines::kPlayerTurn"), std::make_format_args(player.name));
 
             player.enterMine(context, player);
 
-            std::cout << std::vformat(context.language["utilsMsg::kBoardOfPlayerPrompt"], std::make_format_args(player.name));
+            std::cout << std::vformat(context.language.at("utilsMsg::kBoardOfPlayerPrompt"), std::make_format_args(player.name));
             utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
@@ -191,7 +191,7 @@ namespace GameStates
 
     NextState stateProcessingMines(GameContext& context)
     {
-        std::cout << context.language["ProcessingMines::kHeader"];
+        std::cout << context.language.at("ProcessingMines::kHeader");
 
         std::set<MinePosition> mineSet;
         std::set<MinePosition> duplicateMinesSet;
@@ -210,7 +210,7 @@ namespace GameStates
 
         if (duplicateMinesSet.empty())
         {
-            std::cout << context.language["ProcessingMines::kNoCollisions"];
+            std::cout << context.language.at("ProcessingMines::kNoCollisions");
         }
         else
         {
@@ -222,7 +222,7 @@ namespace GameStates
                     
                     if (duplicateMinesSet.count(mine) > 0)
                     {
-                        std::cout << std::vformat(context.language["ProcessingMines::kColissionMsg"], std::make_format_args(mine.x, mine.y));
+                        std::cout << std::vformat(context.language.at("ProcessingMines::kColissionMsg"), std::make_format_args(mine.x, mine.y));
 
                         context.board[mine.x][mine.y].state = PositionState::Removed;
 
@@ -242,22 +242,22 @@ namespace GameStates
 
     NextState stateGuessingMines(GameContext& context)
     {
-        std::cout << context.language["GuessingMines::kHeader"];
+        std::cout << context.language.at("GuessingMines::kHeader");
         
         // The number of guesses the players can make is the same
         // to the number of mines they can place
         
-        std::cout << std::vformat(context.language["GuessingMines::kTotalMsg"], std::make_format_args(context.mines.getValue()));
+        std::cout << std::vformat(context.language.at("GuessingMines::kTotalMsg"), std::make_format_args(context.mines.getValue()));
 
         for (auto& player : context.players)
         {
-            std::cout << std::vformat(context.language["GuessingMines::kPlayerTurn"], std::make_format_args(player.name));
+            std::cout << std::vformat(context.language.at("GuessingMines::kPlayerTurn"), std::make_format_args(player.name));
 
             for (unsigned int i = 0; i < context.mines.getValue(); i++)
             {
                 MinePosition minePosition = utils::board::validBoardPositionState(context.language, context.width, context.height, player);
 
-                std::cout << std::vformat(context.language["GuessingMines::kSuccess"], std::make_format_args(player.name, minePosition.x, minePosition.y));
+                std::cout << std::vformat(context.language.at("GuessingMines::kSuccess"), std::make_format_args(player.name, minePosition.x, minePosition.y));
                 
                 player.placedGuesses.push_back(minePosition);
             }
@@ -268,11 +268,11 @@ namespace GameStates
 
     NextState stateProcessingGuesses(GameContext& context)
     {
-        std::cout << context.language["ProcessingGuesses::kHeader"];
+        std::cout << context.language.at("ProcessingGuesses::kHeader");
 
         for (auto& player : context.players)
         {
-            std::cout << std::vformat(context.language["ProcessingGuesses::kPlayerHeader"], std::make_format_args(player.name));
+            std::cout << std::vformat(context.language.at("ProcessingGuesses::kPlayerHeader"), std::make_format_args(player.name));
 
             for (auto const& guess : player.placedGuesses)
             {
@@ -294,15 +294,15 @@ namespace GameStates
 
             utils::player::saveGuesses(player);
             
-            std::cout << std::vformat(context.language["utilsMsg::kBoardOfPlayerPrompt"], std::make_format_args(player.name));
+            std::cout << std::vformat(context.language.at("utilsMsg::kBoardOfPlayerPrompt"), std::make_format_args(player.name));
             utils::board::printPerPlayer(context.width, context.height, context.board, player);
         }
 
-        std::cout << context.language["ProcessingGuesses::kCurrentScoresHeader"];
+        std::cout << context.language.at("ProcessingGuesses::kCurrentScoresHeader");
             
         for (auto const& player : context.players)
         {
-            std::cout << std::vformat(context.language["ProcessingGuesses::kScoreLine"], std::make_format_args(player.name, player.opponentMinesDetected.getValue(), player.ownMinesDetected.getValue()));
+            std::cout << std::vformat(context.language.at("ProcessingGuesses::kScoreLine"), std::make_format_args(player.name, player.opponentMinesDetected.getValue(), player.ownMinesDetected.getValue()));
         }
 
         return { &stateCheckingNextTurn };
@@ -312,7 +312,7 @@ namespace GameStates
     NextState stateCheckingNextTurn(GameContext& context)
     {
         unsigned int round = context.round.getValue() - 1;
-        std::cout << std::vformat(context.language["Results::kHeader"], std::make_format_args(round));
+        std::cout << std::vformat(context.language.at("Results::kHeader"), std::make_format_args(round));
 
         Players winners;
         Players eliminated;
@@ -321,7 +321,7 @@ namespace GameStates
         {
             unsigned int totalOpponentMines = utils::player::countOpponentMines(player, context.players);
 
-            std::cout << std::vformat(context.language["Results::kPlayerInformation"], std::make_format_args(player.name, player.opponentMinesDetected.getValue(), totalOpponentMines, player.remainingMines.getValue()));
+            std::cout << std::vformat(context.language.at("Results::kPlayerInformation"), std::make_format_args(player.name, player.opponentMinesDetected.getValue(), totalOpponentMines, player.remainingMines.getValue()));
 
             if (player.opponentMinesDetected.getValue() >= totalOpponentMines && totalOpponentMines > 0)
             {
@@ -352,7 +352,7 @@ namespace GameStates
             return { nullptr };
         }
 
-        std::cout << std::vformat(context.language["Results::kProceedRound"], std::make_format_args(context.round.getValue()));
+        std::cout << std::vformat(context.language.at("Results::kProceedRound"), std::make_format_args(context.round.getValue()));
         
         return { &statePuttingMines };
     }
